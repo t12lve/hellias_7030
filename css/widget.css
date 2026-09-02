@@ -1,6 +1,7 @@
 /* Hellias 70/30 — overlay widget (alpha-safe) */
 
-html, body {
+html.overlay-page,
+body.overlay-page {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -221,6 +222,123 @@ html, body {
 }
 
 .size-L .streak-text { font-size: 12px; }
+
+.widget-plus-row {
+  flex-shrink: 0;
+}
+
+.widget-plus-row[hidden] {
+  display: none !important;
+}
+
+.widget-plus-badge {
+  display: block;
+  font-size: 10px;
+  line-height: 1.2;
+  opacity: 0.85;
+  color: color-mix(in srgb, var(--accent) 85%, var(--text));
+  letter-spacing: 0.02em;
+}
+
+.size-L .widget-plus-badge { font-size: 11px; }
+
+.widget-shell.anim-milestone-up {
+  animation: milestonePulse 0.85s ease;
+}
+
+.widget-shell.anim-milestone-down {
+  animation: milestoneSink 1.2s ease;
+}
+
+@keyframes milestonePulse {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.05); }
+}
+
+@keyframes milestoneSink {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(2px); }
+}
+
+.widget-shell.anim-plus-level-up {
+  animation: plusLevelGlow 2.4s ease;
+  z-index: 2;
+}
+
+.widget-shell.anim-plus-level-up--l2 {
+  animation: plusLevelGlowL2 2.4s ease;
+}
+
+@keyframes plusLevelGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  25%, 55% {
+    box-shadow:
+      0 0 0 3px var(--accent),
+      0 0 32px var(--accent),
+      0 0 56px #ffff00,
+      inset 0 0 24px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+}
+
+@keyframes plusLevelGlowL2 {
+  0%, 100% {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  20%, 50%, 75% {
+    box-shadow:
+      0 0 0 4px var(--accent),
+      0 0 40px var(--accent),
+      0 0 64px #ffd700,
+      0 0 80px color-mix(in srgb, #ff2d95 40%, transparent);
+  }
+}
+
+.anim-plus-level-up--l2 .widget-bar-fill {
+  background: linear-gradient(90deg, var(--accent), #ffd700, var(--accent));
+  background-size: 200% 100%;
+  animation: goldShimmer 1.2s ease infinite;
+}
+
+@keyframes goldShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.fx-level-up-banner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 12;
+  pointer-events: none;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.fx-level-up-title {
+  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--accent);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.size-L .fx-level-up-title { font-size: 17px; }
+
+.fx-level-up-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffd700;
+  letter-spacing: 0.08em;
+}
+
+.size-L .fx-level-up-sub { font-size: 13px; }
 
 .widget-shell.state-up .widget-bar-fill {
   filter: brightness(1.35) saturate(1.4);

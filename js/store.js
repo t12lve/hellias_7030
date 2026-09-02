@@ -4,10 +4,22 @@
   var STORAGE_KEY = 'hellias7030';
   var CHANNEL_NAME = 'hellias7030-sync';
 
+  var PLUS_LEVELS = {
+    1: { goal: 100, split: '60/40', label: 'Plus L1' },
+    2: { goal: 300, split: '70/30', label: 'Plus L2' }
+  };
+
   var DEFAULTS = {
     channelId: '',
-    goal: 300,
-    label: '70/30',
+    dataSource: 'streamlabs-subgoal',
+    slSubGoalToken: '',
+    goal: 800,
+    label: 'Sub Points',
+    showPlusLevel: false,
+    plusTargetLevel: 2,
+    plusPoints: 0,
+    plusGoal: 300,
+    lastPlusLevelCelebrated: 0,
     streakPast: 0,
     streakOverride: null,
     liveSource: 'none',
@@ -101,12 +113,53 @@
     return 0;
   }
 
+  function plusGoalForLevel(level) {
+    var l = PLUS_LEVELS[level];
+    return l ? l.goal : PLUS_LEVELS[2].goal;
+  }
+
+  function detectPlusLevelUp(prev, next) {
+    prev = Number(prev) || 0;
+    next = Number(next) || 0;
+    if (prev < 100 && next >= 100) return 1;
+    if (prev < 300 && next >= 300) return 2;
+    return null;
+  }
+
+  function initPlusCelebrated(points) {
+    points = Number(points) || 0;
+    if (points >= 300) return 2;
+    if (points >= 100) return 1;
+    return 0;
+  }
+
+  function shouldPollPlus(cfg) {
+    return !!(cfg.channelId && String(cfg.channelId).trim());
+  }
+
+  function streakPoints(cfg) {
+    if (shouldPollPlus(cfg)) {
+      return Number(cfg.plusPoints) || 0;
+    }
+    return displayPoints(cfg);
+  }
+
+  function streakGoal(cfg) {
+    if (shouldPollPlus(cfg)) {
+      var level = Number(cfg.plusTargetLevel) || 2;
+      return plusGoalForLevel(level);
+    }
+    return Number(cfg.goal) || 300;
+  }
+
   function computeStreak(cfg, points) {
     if (cfg.streakOverride !== null && cfg.streakOverride !== undefined && cfg.streakOverride !== '') {
       return Math.min(3, Math.max(0, Number(cfg.streakOverride)));
     }
     var past = Math.min(2, Math.max(0, Number(cfg.streakPast) || 0));
-    var currentOnTrack = points >= cfg.goal ? 1 : 0;
+    var goal = streakGoal(cfg);
+    var pts = points != null ? points : streakPoints(cfg);
+    var currentOnTrack = pts >= goal ? 1 : 0;
     return Math.min(3, past + currentOnTrack);
   }
 
@@ -115,6 +168,10 @@
       ? Number(cfg.pointsOverride)
       : Number(cfg.points) || 0;
     return Math.max(0, base + (Number(cfg.optimisticDelta) || 0));
+  }
+
+  function milestoneFloor(points) {
+    return Math.floor(Math.max(0, Number(points) || 0) / 30) * 30;
   }
 
   function hexToRgba(hex, alpha) {
@@ -135,14 +192,22 @@
   global.HelliasStore = {
     STORAGE_KEY: STORAGE_KEY,
     DEFAULTS: DEFAULTS,
+    PLUS_LEVELS: PLUS_LEVELS,
     SIZES: SIZES,
     TIER_POINTS: TIER_POINTS,
     load: load,
     save: save,
     subscribe: subscribe,
     tierToPoints: tierToPoints,
+    plusGoalForLevel: plusGoalForLevel,
+    detectPlusLevelUp: detectPlusLevelUp,
+    initPlusCelebrated: initPlusCelebrated,
+    shouldPollPlus: shouldPollPlus,
+    streakPoints: streakPoints,
+    streakGoal: streakGoal,
     computeStreak: computeStreak,
     displayPoints: displayPoints,
+    milestoneFloor: milestoneFloor,
     hexToRgba: hexToRgba
   };
 })(typeof window !== 'undefined' ? window : globalThis);

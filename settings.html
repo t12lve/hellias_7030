@@ -6,171 +6,324 @@
   <title>Hellias 70/30 — Réglages</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/settings.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/widget.css">
+  <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
-  <div class="settings-wrap">
-    <h1>Hellias 70/30</h1>
-    <p class="subtitle">Widget Plus Points — réglages overlay OBS / Streamlabs / StreamElements</p>
-
-    <form id="settings-form">
-      <div class="grid">
-        <div class="panel">
-          <h2>Données Twitch</h2>
-          <div class="field">
-            <label for="channelId">Twitch Channel ID</label>
-            <input type="text" id="channelId" name="channelId" placeholder="ex. 19571641" autocomplete="off">
-            <p class="hint">ID numérique de la chaîne (pas le pseudo). Trouvable sur <a href="https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/" target="_blank" rel="noopener">un convertisseur</a>.</p>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="goal">Objectif Plus Points</label>
-              <input type="number" id="goal" name="goal" min="1" max="9999" value="300">
-            </div>
-            <div class="field">
-              <label for="pollInterval">Intervalle API (sec)</label>
-              <input type="number" id="pollInterval" name="pollInterval" min="15" max="300" value="45">
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="pointsOverride">Override points (vide = API)</label>
-              <input type="number" id="pointsOverride" name="pointsOverride" min="0" placeholder="auto">
-            </div>
-            <div class="field">
-              <label for="label">Label widget</label>
-              <input type="text" id="label" name="label" value="70/30">
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2>Streak 3 mois</h2>
-          <div class="field">
-            <label for="streakPast">Mois validés passés (0–2)</label>
-            <input type="number" id="streakPast" name="streakPast" min="0" max="2" value="0">
-            <p class="hint">Le mois en cours compte automatiquement si points ≥ objectif.</p>
-          </div>
-          <div class="field">
-            <label for="streakOverride">Override streak (vide = auto)</label>
-            <input type="number" id="streakOverride" name="streakOverride" min="0" max="3" placeholder="auto">
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2>Source live (animations instantanées)</h2>
-          <div class="field">
-            <label for="liveSource">Plateforme</label>
-            <select id="liveSource" name="liveSource">
-              <option value="none">Aucune (API seule)</option>
-              <option value="se">StreamElements</option>
-              <option value="sl">Streamlabs</option>
-            </select>
-          </div>
-          <div id="se-fields" hidden>
-            <div class="field">
-              <label for="seToken">JWT StreamElements</label>
-              <input type="password" id="seToken" name="seToken" autocomplete="off">
-              <p class="hint">Dashboard SE → avatar → chaîne → copier le JWT.</p>
-            </div>
-            <div class="field">
-              <label for="seChannelId">SE Channel ID (room)</label>
-              <input type="text" id="seChannelId" name="seChannelId" autocomplete="off">
-            </div>
-          </div>
-          <div id="sl-fields" hidden>
-            <div class="field">
-              <label for="slSocketToken">Streamlabs Socket Token</label>
-              <input type="password" id="slSocketToken" name="slSocketToken" autocomplete="off">
-              <p class="hint">API Streamlabs → endpoint <code>/socket/token</code>.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2>Apparence</h2>
-          <div class="field-row">
-            <div class="field">
-              <label for="size">Taille</label>
-              <select id="size" name="size">
-                <option value="S">S — 280×80</option>
-                <option value="M" selected>M — 360×100</option>
-                <option value="L">L — 440×120</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="anchor">Ancrage (si source plus grande)</label>
-              <select id="anchor" name="anchor">
-                <option value="top-left">Haut gauche</option>
-                <option value="top-right">Haut droite</option>
-                <option value="bottom-left">Bas gauche</option>
-                <option value="bottom-right">Bas droite</option>
-              </select>
-            </div>
-          </div>
-          <div class="field">
-            <label for="bgOpacity">Opacité fond widget (<span id="bgOpacityVal">100</span>%)</label>
-            <input type="range" id="bgOpacity" name="bgOpacity" min="0.5" max="1" step="0.05" value="1">
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="colorAccent">Accent (lime)</label>
-              <input type="color" id="colorAccent" name="colorAccent" value="#c8ff00">
-            </div>
-            <div class="field">
-              <label for="colorBg">Fond</label>
-              <input type="color" id="colorBg" name="colorBg" value="#1a1a1e">
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="colorText">Texte</label>
-              <input type="color" id="colorText" name="colorText" value="#f0f0f0">
-            </div>
-            <div class="field">
-              <label for="colorGrid">Grille barre</label>
-              <input type="color" id="colorGrid" name="colorGrid" value="#000000">
-            </div>
-          </div>
-        </div>
-
-        <div class="panel preview-panel">
-          <h2>Aperçu (damier = zone alpha)</h2>
-          <div class="preview-frame" id="preview-frame" data-anchor="top-left">
-            <div id="preview-root"></div>
-          </div>
-          <div class="preview-actions">
-            <button type="button" class="btn-secondary" id="btn-preview-up">Preview ↑ level up</button>
-            <button type="button" class="btn-secondary" id="btn-preview-down">Preview ↓ level down</button>
-            <button type="button" class="btn-ghost" id="btn-open-overlay">Ouvrir overlay.html</button>
-            <label class="demo-toggle">
-              <input type="checkbox" id="demoMode" name="demoMode">
-              Mode démo
-            </label>
-            <div class="status-bar" id="status-bar">Prêt.</div>
-          </div>
-        </div>
-
-        <div class="panel" style="grid-column: 1 / -1;">
-          <h2>Setup OBS / Streamlabs / StreamElements</h2>
-          <ul class="obs-checklist">
-            <li>Ajouter une <strong>Browser Source</strong> pointant vers <code>overlay.html</code> (fichier local).</li>
-            <li>Dimensions = taille choisie (S/M/L). Custom CSS si besoin : <code>body { background-color: rgba(0,0,0,0); }</code></li>
-            <li>Ne pas activer de fond de couleur sur la source — seul le widget a un fond.</li>
-            <li>Cocher « Shutdown source when not visible » optionnel ; garder « Refresh browser when scene becomes active » pour resync.</li>
-            <li>Ouvrir cette page <code>settings.html</code> dans un dock navigateur OBS pour ajuster en live.</li>
-          </ul>
-        </div>
+  <div class="settings-app">
+    <header class="settings-topbar">
+      <div class="brand">
+        <h1>Hellias 70/30</h1>
+        <p>Configure le widget, teste, puis branche-le dans OBS</p>
       </div>
-
-      <div class="actions">
-        <button type="submit" class="btn-primary">Enregistrer</button>
-        <button type="button" class="btn-secondary" id="btn-test-api">Tester API</button>
-        <button type="button" class="btn-ghost" id="btn-reset">Réinitialiser</button>
+      <div class="topbar-actions">
+        <button type="button" class="btn btn-ghost" id="btn-open-overlay">Ouvrir overlay</button>
+        <button type="button" class="btn btn-secondary" id="btn-test-api">Tester API</button>
+        <button type="submit" form="settings-form" class="btn btn-primary">Enregistrer</button>
       </div>
-    </form>
+    </header>
+
+    <div class="settings-body">
+      <main class="settings-main">
+        <form id="settings-form" class="settings-main-inner">
+          <p class="info-banner" id="sub-goal-banner" hidden>
+            Compteur = <strong>Sub Points</strong> communautaire (ex. 476/800), pas le Plus Goal officiel Twitch (18/100).
+          </p>
+
+          <!-- 1. Compteur -->
+          <section class="section" aria-labelledby="sec-source">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">1</span>
+              <div>
+                <h2 id="sec-source">Compteur principal</h2>
+                <p class="section-desc">Ce que le widget affiche en gros sur le stream.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="choice-grid" role="radiogroup" aria-label="Source du compteur">
+                <label class="choice-card" id="choice-sl">
+                  <input type="radio" name="dataSourceRadio" value="streamlabs-subgoal" checked>
+                  <span class="choice-title">Sub Points</span>
+                  <span class="choice-meta">Goal Streamlabs communautaire — recommandé</span>
+                </label>
+                <label class="choice-card" id="choice-plus">
+                  <input type="radio" name="dataSourceRadio" value="plus-api">
+                  <span class="choice-title">Plus Points</span>
+                  <span class="choice-meta">Score officiel Twitch 70/30 (hors Prime / gifts)</span>
+                </label>
+              </div>
+              <select id="dataSource" name="dataSource" hidden aria-hidden="true">
+                <option value="streamlabs-subgoal">streamlabs-subgoal</option>
+                <option value="plus-api">plus-api</option>
+              </select>
+
+              <div id="sl-subgoal-fields">
+                <div class="field">
+                  <div class="field-label">
+                    <label for="slSubGoalToken">URL ou token Sub Goal Streamlabs</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="Dashboard Streamlabs → All Widgets → Sub Goal → copier l'URL. Différent du Socket Token live.">?</button>
+                  </div>
+                  <input type="password" id="slSubGoalToken" name="slSubGoalToken" autocomplete="off" placeholder="https://streamlabs.com/widgets/sub-goal?token=…">
+                  <p class="hint" id="sl-token-hint">Colle l'URL Sub Goal pour synchroniser le compteur.</p>
+                </div>
+              </div>
+
+              <div class="field" id="plus-api-fields">
+                <div class="field-label">
+                  <label for="channelId">Twitch Channel ID</label>
+                  <button type="button" class="help-tip" aria-label="Aide" data-tip="ID numérique Twitch. Requis pour Plus Points, badge Plus et détection level up.">?</button>
+                </div>
+                <input type="text" id="channelId" name="channelId" placeholder="ex. 119903368" autocomplete="off">
+                <p class="hint"><a href="https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/" target="_blank" rel="noopener">Convertir un username → ID</a></p>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label">
+                    <label for="goal">Objectif</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="Sync auto depuis Streamlabs (ex. 800) ou seuil Plus (100 / 300).">?</button>
+                  </div>
+                  <input type="number" id="goal" name="goal" min="1" max="9999" value="800">
+                </div>
+                <div class="field">
+                  <div class="field-label">
+                    <label for="label">Label affiché</label>
+                  </div>
+                  <input type="text" id="label" name="label" value="Sub Points">
+                </div>
+              </div>
+
+              <details class="advanced">
+                <summary>Options avancées (override, polling)</summary>
+                <div class="advanced-body">
+                  <div class="field-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <label for="pointsOverride">Override points</label>
+                        <button type="button" class="help-tip" aria-label="Aide" data-tip="Force le compteur manuellement. Vide = valeur API.">?</button>
+                      </div>
+                      <input type="number" id="pointsOverride" name="pointsOverride" min="0" placeholder="auto">
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <label for="pollInterval">Intervalle API (sec)</label>
+                        <button type="button" class="help-tip" aria-label="Aide" data-tip="Fréquence de polling. Minimum 15 s.">?</button>
+                      </div>
+                      <input type="number" id="pollInterval" name="pollInterval" min="15" max="300" value="45">
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <!-- 2. Partner Plus -->
+          <section class="section" aria-labelledby="sec-plus">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">2</span>
+              <div>
+                <h2 id="sec-plus">Partner Plus</h2>
+                <p class="section-desc">Badge optionnel + level up auto (L1 = 60/40 @ 100, L2 = 70/30 @ 300).</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <label class="check-row" for="showPlusLevel">
+                <input type="checkbox" id="showPlusLevel" name="showPlusLevel">
+                <span class="check-copy">
+                  <strong>Afficher le badge Plus</strong>
+                  <span>Ligne compacte sous le compteur, ex. Plus L2 · 18/300 · 70/30</span>
+                </span>
+              </label>
+              <div class="field">
+                <div class="field-label">
+                  <label for="plusTargetLevel">Niveau cible</label>
+                  <button type="button" class="help-tip" aria-label="Aide" data-tip="Le 70/30 est le Level 2 (300 pts), pas Level 3. Channel ID requis.">?</button>
+                </div>
+                <select id="plusTargetLevel" name="plusTargetLevel">
+                  <option value="1">Level 1 — 60/40 @ 100 pts</option>
+                  <option value="2" selected>Level 2 — 70/30 @ 300 pts</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Streak -->
+          <section class="section" aria-labelledby="sec-streak">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">3</span>
+              <div>
+                <h2 id="sec-streak">Streak 3 mois</h2>
+                <p class="section-desc">Le 70/30 exige 3 mois consécutifs au seuil.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label">
+                    <label for="streakPast">Mois déjà validés (0–2)</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="Mois passés déjà au seuil. Le mois courant compte auto si points ≥ objectif.">?</button>
+                  </div>
+                  <input type="number" id="streakPast" name="streakPast" min="0" max="2" value="0">
+                </div>
+                <div class="field">
+                  <div class="field-label">
+                    <label for="streakOverride">Override streak</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="Force l'affichage n/3. Vide = calcul auto.">?</button>
+                  </div>
+                  <input type="number" id="streakOverride" name="streakOverride" min="0" max="3" placeholder="auto">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Live -->
+          <section class="section" aria-labelledby="sec-live">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">4</span>
+              <div>
+                <h2 id="sec-live">Animations live</h2>
+                <p class="section-desc">Optionnel — confetti immédiat à chaque sub payé. Le total reste piloté par l'API.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="field">
+                <div class="field-label">
+                  <label for="liveSource">Plateforme</label>
+                  <button type="button" class="help-tip" aria-label="Aide" data-tip="Socket live ≠ token Sub Goal. Uniquement pour les anims.">?</button>
+                </div>
+                <select id="liveSource" name="liveSource">
+                  <option value="none">Aucune (API seule)</option>
+                  <option value="se">StreamElements</option>
+                  <option value="sl">Streamlabs Socket</option>
+                </select>
+              </div>
+              <div id="se-fields" hidden>
+                <div class="field">
+                  <div class="field-label"><label for="seToken">JWT StreamElements</label></div>
+                  <input type="password" id="seToken" name="seToken" autocomplete="off">
+                </div>
+                <div class="field">
+                  <div class="field-label"><label for="seChannelId">SE Channel ID</label></div>
+                  <input type="text" id="seChannelId" name="seChannelId" autocomplete="off">
+                </div>
+              </div>
+              <div id="sl-fields" hidden>
+                <div class="field">
+                  <div class="field-label">
+                    <label for="slSocketToken">Streamlabs Socket Token</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="API Streamlabs → /socket/token. Pas le token du widget Sub Goal.">?</button>
+                  </div>
+                  <input type="password" id="slSocketToken" name="slSocketToken" autocomplete="off">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. Apparence -->
+          <section class="section" aria-labelledby="sec-look">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">5</span>
+              <div>
+                <h2 id="sec-look">Apparence</h2>
+                <p class="section-desc">Taille OBS, coin d'ancrage, couleurs Hellias.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label">
+                    <label for="size">Taille Browser Source</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="S 280×80 · M 360×100 · L 440×120">?</button>
+                  </div>
+                  <select id="size" name="size">
+                    <option value="S">S — 280×80</option>
+                    <option value="M" selected>M — 360×100</option>
+                    <option value="L">L — 440×120</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <div class="field-label">
+                    <label for="anchor">Ancrage</label>
+                    <button type="button" class="help-tip" aria-label="Aide" data-tip="Coin du widget si la source est plus grande.">?</button>
+                  </div>
+                  <select id="anchor" name="anchor">
+                    <option value="top-left">Haut gauche</option>
+                    <option value="top-right">Haut droite</option>
+                    <option value="bottom-left">Bas gauche</option>
+                    <option value="bottom-right">Bas droite</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <div class="field-label">
+                  <label for="bgOpacity">Opacité fond — <span id="bgOpacityVal">100</span>%</label>
+                  <button type="button" class="help-tip" aria-label="Aide" data-tip="Seul le widget a un fond. Le reste de la page reste transparent pour OBS.">?</button>
+                </div>
+                <input type="range" id="bgOpacity" name="bgOpacity" min="0.5" max="1" step="0.05" value="1">
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label"><label for="colorAccent">Accent</label></div>
+                  <input type="color" id="colorAccent" name="colorAccent" value="#c8ff00">
+                </div>
+                <div class="field">
+                  <div class="field-label"><label for="colorBg">Fond</label></div>
+                  <input type="color" id="colorBg" name="colorBg" value="#1a1a1e">
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <div class="field-label"><label for="colorText">Texte</label></div>
+                  <input type="color" id="colorText" name="colorText" value="#f0f0f0">
+                </div>
+                <div class="field">
+                  <div class="field-label"><label for="colorGrid">Grille</label></div>
+                  <input type="color" id="colorGrid" name="colorGrid" value="#000000">
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-danger-ghost" id="btn-reset">Réinitialiser les réglages</button>
+          </div>
+        </form>
+      </main>
+
+      <aside class="settings-aside" aria-label="Aperçu et tests">
+        <p class="aside-title">Aperçu live</p>
+        <div class="preview-frame" id="preview-frame" data-anchor="top-left">
+          <div id="preview-root"></div>
+        </div>
+        <div class="status-bar" id="status-bar" role="status">Prêt — enregistre pour sync OBS.</div>
+
+        <div class="aside-block">
+          <h3>Tester les animations</h3>
+          <div class="anim-grid">
+            <button type="button" class="btn btn-secondary" id="btn-preview-up">Up</button>
+            <button type="button" class="btn btn-secondary" id="btn-preview-down">Down</button>
+            <button type="button" class="btn btn-secondary" id="btn-preview-milestone">Milestone +30</button>
+            <button type="button" class="btn btn-secondary" id="btn-preview-l1">Level up L1</button>
+            <button type="button" class="btn btn-secondary" id="btn-preview-l2">Level up L2</button>
+          </div>
+          <label class="demo-toggle">
+            <input type="checkbox" id="demoMode" name="demoMode" form="settings-form">
+            Mode démo (simule gains / pertes)
+          </label>
+        </div>
+
+        <div class="aside-block aside-footer">
+          <h3>Setup OBS</h3>
+          <ol class="setup-list">
+            <li>Browser Source → URL Pages <code>…/overlay.html</code> (pas un autre domaine)</li>
+            <li>Dock / onglet → cette page <code>settings.html</code> (même origine = sync)</li>
+            <li>Dimensions = taille S / M / L · CSS : <code>body { background-color: rgba(0,0,0,0); }</code></li>
+            <li>Après Enregistrer, l’overlay se met à jour (localStorage + BroadcastChannel)</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -194,6 +347,13 @@
       var bgOpacity = document.getElementById('bgOpacity');
       var bgOpacityVal = document.getElementById('bgOpacityVal');
       var demoModeEl = document.getElementById('demoMode');
+      var dataSourceEl = document.getElementById('dataSource');
+      var slSubGoalFields = document.getElementById('sl-subgoal-fields');
+      var plusApiFields = document.getElementById('plus-api-fields');
+      var subGoalBanner = document.getElementById('sub-goal-banner');
+      var slTokenHint = document.getElementById('sl-token-hint');
+      var choiceSl = document.getElementById('choice-sl');
+      var choicePlus = document.getElementById('choice-plus');
 
       var previewWidget = new HelliasWidget(previewRoot, { previewOnly: true });
       previewWidget.init();
@@ -203,18 +363,52 @@
         statusBar.className = 'status-bar' + (kind ? ' ' + kind : '');
       }
 
+      function syncChoiceCards() {
+        var isSl = dataSourceEl.value === 'streamlabs-subgoal';
+        var radios = document.querySelectorAll('input[name="dataSourceRadio"]');
+        for (var i = 0; i < radios.length; i++) {
+          radios[i].checked = radios[i].value === dataSourceEl.value;
+        }
+        choiceSl.classList.toggle('is-selected', isSl);
+        choicePlus.classList.toggle('is-selected', !isSl);
+      }
+
       function toggleLiveFields() {
         var v = liveSource.value;
         seFields.hidden = v !== 'se';
         slFields.hidden = v !== 'sl';
       }
 
+      function toggleDataSourceFields() {
+        var isSl = dataSourceEl.value === 'streamlabs-subgoal';
+        slSubGoalFields.hidden = !isSl;
+        subGoalBanner.hidden = !isSl;
+        /* Channel ID always visible: needed for Plus badge / level-up even with Sub Points */
+        plusApiFields.hidden = false;
+        syncChoiceCards();
+
+        var token = HelliasSlApi.extractSlWidgetToken(document.getElementById('slSubGoalToken').value);
+        if (isSl && !token) {
+          slTokenHint.className = 'hint hint-warn';
+          slTokenHint.textContent = 'Colle l\'URL Sub Goal Streamlabs pour synchroniser le compteur.';
+        } else {
+          slTokenHint.className = 'hint';
+          slTokenHint.textContent = isSl
+            ? 'Goal SL en sub points (filtres Prime/gifts selon ta config Streamlabs).'
+            : 'Channel ID obligatoire pour le compteur Plus Points.';
+        }
+      }
+
       function cfgToForm(cfg) {
         document.getElementById('channelId').value = cfg.channelId || '';
+        dataSourceEl.value = cfg.dataSource || 'streamlabs-subgoal';
+        document.getElementById('slSubGoalToken').value = cfg.slSubGoalToken || '';
         document.getElementById('goal').value = cfg.goal;
         document.getElementById('pollInterval').value = cfg.pollInterval;
         document.getElementById('pointsOverride').value = cfg.pointsOverride != null && cfg.pointsOverride !== '' ? cfg.pointsOverride : '';
         document.getElementById('label').value = cfg.label;
+        document.getElementById('showPlusLevel').checked = !!cfg.showPlusLevel;
+        document.getElementById('plusTargetLevel').value = String(cfg.plusTargetLevel || 2);
         document.getElementById('streakPast').value = cfg.streakPast;
         document.getElementById('streakOverride').value = cfg.streakOverride != null && cfg.streakOverride !== '' ? cfg.streakOverride : '';
         liveSource.value = cfg.liveSource || 'none';
@@ -230,6 +424,7 @@
         document.getElementById('colorText').value = cfg.colors.text;
         document.getElementById('colorGrid').value = cfg.colors.grid;
         demoModeEl.checked = !!cfg.demoMode;
+        toggleDataSourceFields();
         toggleLiveFields();
         updatePreviewSize(cfg);
         previewFrame.setAttribute('data-anchor', cfg.anchor || 'top-left');
@@ -240,10 +435,14 @@
         var so = document.getElementById('streakOverride').value;
         return {
           channelId: document.getElementById('channelId').value.trim(),
-          goal: Number(document.getElementById('goal').value) || 300,
+          dataSource: dataSourceEl.value,
+          slSubGoalToken: document.getElementById('slSubGoalToken').value.trim(),
+          goal: Number(document.getElementById('goal').value) || 800,
           pollInterval: Number(document.getElementById('pollInterval').value) || 45,
           pointsOverride: po === '' ? null : Number(po),
-          label: document.getElementById('label').value || '70/30',
+          label: document.getElementById('label').value || 'Sub Points',
+          showPlusLevel: document.getElementById('showPlusLevel').checked,
+          plusTargetLevel: Number(document.getElementById('plusTargetLevel').value) || 2,
           streakPast: Number(document.getElementById('streakPast').value) || 0,
           streakOverride: so === '' ? null : Number(so),
           liveSource: liveSource.value,
@@ -278,7 +477,8 @@
         updatePreviewSize(cfg);
         previewFrame.setAttribute('data-anchor', cfg.anchor);
         previewWidget.applyConfig(cfg);
-        setStatus(cfg.demoMode ? 'Mode démo actif.' : 'Enregistré.', 'ok');
+        toggleDataSourceFields();
+        setStatus(cfg.demoMode ? 'Mode démo actif.' : 'Enregistré — overlay synchronisé.', 'ok');
         return cfg;
       }
 
@@ -290,7 +490,23 @@
         saveAndSync();
       });
 
+      document.querySelectorAll('input[name="dataSourceRadio"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          dataSourceEl.value = radio.value;
+          if (radio.value === 'streamlabs-subgoal' && !document.getElementById('label').value) {
+            document.getElementById('label').value = 'Sub Points';
+          }
+          if (radio.value === 'plus-api') {
+            var lbl = document.getElementById('label');
+            if (lbl.value === 'Sub Points' || !lbl.value) lbl.value = '70/30';
+          }
+          toggleDataSourceFields();
+        });
+      });
+
       liveSource.addEventListener('change', toggleLiveFields);
+      dataSourceEl.addEventListener('change', toggleDataSourceFields);
+      document.getElementById('slSubGoalToken').addEventListener('input', toggleDataSourceFields);
 
       bgOpacity.addEventListener('input', function () {
         bgOpacityVal.textContent = Math.round(bgOpacity.value * 100);
@@ -302,15 +518,30 @@
 
       document.getElementById('btn-test-api').addEventListener('click', function () {
         var cfg = formToCfg();
-        if (!cfg.channelId) {
+        if (cfg.dataSource === 'streamlabs-subgoal') {
+          if (!HelliasSlApi.extractSlWidgetToken(cfg.slSubGoalToken)) {
+            setStatus('Token Sub Goal Streamlabs requis.', 'err');
+            return;
+          }
+        } else if (!cfg.channelId) {
           setStatus('Channel ID requis.', 'err');
           return;
         }
         setStatus('Test API…');
         var api = new HelliasDataApi(function (p) {
-          Store.save({ points: p.points, channelId: cfg.channelId });
+          var patch = { points: p.points };
+          if (p.goal != null) patch.goal = p.goal;
+          Store.save(patch);
+          if (Store.shouldPollPlus(cfg) && cfg.channelId) {
+            api.fetchPlusPoints(cfg.channelId).then(function (plus) {
+              Store.save({ plusPoints: plus.points, plusGoal: plus.goal || plus.threshold });
+              previewWidget.applyConfig(Store.load());
+            }).catch(function () {});
+          }
           previewWidget.applyConfig(Store.load());
-          setStatus('API OK — ' + p.points + ' Plus Points', 'ok');
+          document.getElementById('goal').value = Store.load().goal;
+          var label = cfg.dataSource === 'streamlabs-subgoal' ? 'Sub Points' : 'Plus Points';
+          setStatus(label + ' OK — ' + p.points + (p.goal != null ? ' / ' + p.goal : ''), 'ok');
         }, function (err) {
           setStatus('Erreur API : ' + err.message, 'err');
         });
@@ -328,19 +559,37 @@
       });
 
       document.getElementById('btn-open-overlay').addEventListener('click', function () {
-        window.open('overlay.html', '_blank');
+        window.open(new URL('overlay.html', window.location.href).href, 'hellias-overlay');
       });
 
       document.getElementById('btn-preview-up').addEventListener('click', function () {
         saveAndSync();
         previewWidget.previewAnimUp();
-        setStatus('Anim level up.', 'ok');
+        setStatus('Anim up.', 'ok');
       });
 
       document.getElementById('btn-preview-down').addEventListener('click', function () {
         saveAndSync();
         previewWidget.previewAnimDown();
-        setStatus('Anim level down.', 'ok');
+        setStatus('Anim down.', 'ok');
+      });
+
+      document.getElementById('btn-preview-milestone').addEventListener('click', function () {
+        saveAndSync();
+        previewWidget.previewMilestone();
+        setStatus('Milestone +30.', 'ok');
+      });
+
+      document.getElementById('btn-preview-l1').addEventListener('click', function () {
+        saveAndSync();
+        previewWidget.previewPlusLevelUp(1);
+        setStatus('Level up L1.', 'ok');
+      });
+
+      document.getElementById('btn-preview-l2').addEventListener('click', function () {
+        saveAndSync();
+        previewWidget.previewPlusLevelUp(2);
+        setStatus('Level up L2.', 'ok');
       });
 
       Store.subscribe(function (cfg) {
