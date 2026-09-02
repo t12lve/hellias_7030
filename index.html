@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hellias 70/30 — Démo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8ff00;
+      --bg: #0e0e10;
+      --surface: #1a1a1e;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'IBM Plex Mono', Consolas, monospace;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(200, 255, 0, 0.08), transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(255, 45, 149, 0.06), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid #2a2a30;
+      border-radius: 8px;
+      padding: 32px 28px;
+    }
+    h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.75rem;
+      margin: 0 0 8px;
+      color: var(--accent);
+    }
+    p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    a {
+      display: block;
+      padding: 14px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, box-shadow 0.15s;
+    }
+    a.primary {
+      background: var(--accent);
+      color: #000;
+    }
+    a.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid #2a2a30;
+    }
+    a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(200, 255, 0, 0.15);
+    }
+    .hint {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hellias 70/30</h1>
+    <p>Widget Plus Points Twitch — démo GitHub Pages. Ouvre les réglages pour tester animations et mode démo, ou l’overlay transparent pour OBS.</p>
+    <div class="links">
+      <a class="primary" href="settings.html">Réglages + preview</a>
+      <a class="secondary" href="overlay.html">Overlay (transparent)</a>
+    </div>
+    <p class="hint">OBS → Browser Source → URL de overlay.html · Dimensions S/M/L selon settings.</p>
+  </div>
+</body>
+</html>

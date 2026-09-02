@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hellias 70/30 — Réglages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/widget.css">
+</head>
+<body>
+  <div class="settings-wrap">
+    <h1>Hellias 70/30</h1>
+    <p class="subtitle">Widget Plus Points — réglages overlay OBS / Streamlabs / StreamElements</p>
+
+    <form id="settings-form">
+      <div class="grid">
+        <div class="panel">
+          <h2>Données Twitch</h2>
+          <div class="field">
+            <label for="channelId">Twitch Channel ID</label>
+            <input type="text" id="channelId" name="channelId" placeholder="ex. 19571641" autocomplete="off">
+            <p class="hint">ID numérique de la chaîne (pas le pseudo). Trouvable sur <a href="https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/" target="_blank" rel="noopener">un convertisseur</a>.</p>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="goal">Objectif Plus Points</label>
+              <input type="number" id="goal" name="goal" min="1" max="9999" value="300">
+            </div>
+            <div class="field">
+              <label for="pollInterval">Intervalle API (sec)</label>
+              <input type="number" id="pollInterval" name="pollInterval" min="15" max="300" value="45">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="pointsOverride">Override points (vide = API)</label>
+              <input type="number" id="pointsOverride" name="pointsOverride" min="0" placeholder="auto">
+            </div>
+            <div class="field">
+              <label for="label">Label widget</label>
+              <input type="text" id="label" name="label" value="70/30">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Streak 3 mois</h2>
+          <div class="field">
+            <label for="streakPast">Mois validés passés (0–2)</label>
+            <input type="number" id="streakPast" name="streakPast" min="0" max="2" value="0">
+            <p class="hint">Le mois en cours compte automatiquement si points ≥ objectif.</p>
+          </div>
+          <div class="field">
+            <label for="streakOverride">Override streak (vide = auto)</label>
+            <input type="number" id="streakOverride" name="streakOverride" min="0" max="3" placeholder="auto">
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Source live (animations instantanées)</h2>
+          <div class="field">
+            <label for="liveSource">Plateforme</label>
+            <select id="liveSource" name="liveSource">
+              <option value="none">Aucune (API seule)</option>
+              <option value="se">StreamElements</option>
+              <option value="sl">Streamlabs</option>
+            </select>
+          </div>
+          <div id="se-fields" hidden>
+            <div class="field">
+              <label for="seToken">JWT StreamElements</label>
+              <input type="password" id="seToken" name="seToken" autocomplete="off">
+              <p class="hint">Dashboard SE → avatar → chaîne → copier le JWT.</p>
+            </div>
+            <div class="field">
+              <label for="seChannelId">SE Channel ID (room)</label>
+              <input type="text" id="seChannelId" name="seChannelId" autocomplete="off">
+            </div>
+          </div>
+          <div id="sl-fields" hidden>
+            <div class="field">
+              <label for="slSocketToken">Streamlabs Socket Token</label>
+              <input type="password" id="slSocketToken" name="slSocketToken" autocomplete="off">
+              <p class="hint">API Streamlabs → endpoint <code>/socket/token</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Apparence</h2>
+          <div class="field-row">
+            <div class="field">
+              <label for="size">Taille</label>
+              <select id="size" name="size">
+                <option value="S">S — 280×80</option>
+                <option value="M" selected>M — 360×100</option>
+                <option value="L">L — 440×120</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="anchor">Ancrage (si source plus grande)</label>
+              <select id="anchor" name="anchor">
+                <option value="top-left">Haut gauche</option>
+                <option value="top-right">Haut droite</option>
+                <option value="bottom-left">Bas gauche</option>
+                <option value="bottom-right">Bas droite</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bgOpacity">Opacité fond widget (<span id="bgOpacityVal">100</span>%)</label>
+            <input type="range" id="bgOpacity" name="bgOpacity" min="0.5" max="1" step="0.05" value="1">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="colorAccent">Accent (lime)</label>
+              <input type="color" id="colorAccent" name="colorAccent" value="#c8ff00">
+            </div>
+            <div class="field">
+              <label for="colorBg">Fond</label>
+              <input type="color" id="colorBg" name="colorBg" value="#1a1a1e">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="colorText">Texte</label>
+              <input type="color" id="colorText" name="colorText" value="#f0f0f0">
+            </div>
+            <div class="field">
+              <label for="colorGrid">Grille barre</label>
+              <input type="color" id="colorGrid" name="colorGrid" value="#000000">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel preview-panel">
+          <h2>Aperçu (damier = zone alpha)</h2>
+          <div class="preview-frame" id="preview-frame" data-anchor="top-left">
+            <div id="preview-root"></div>
+          </div>
+          <div class="preview-actions">
+            <button type="button" class="btn-secondary" id="btn-preview-up">Preview ↑ level up</button>
+            <button type="button" class="btn-secondary" id="btn-preview-down">Preview ↓ level down</button>
+            <button type="button" class="btn-ghost" id="btn-open-overlay">Ouvrir overlay.html</button>
+            <label class="demo-toggle">
+              <input type="checkbox" id="demoMode" name="demoMode">
+              Mode démo
+            </label>
+            <div class="status-bar" id="status-bar">Prêt.</div>
+          </div>
+        </div>
+
+        <div class="panel" style="grid-column: 1 / -1;">
+          <h2>Setup OBS / Streamlabs / StreamElements</h2>
+          <ul class="obs-checklist">
+            <li>Ajouter une <strong>Browser Source</strong> pointant vers <code>overlay.html</code> (fichier local).</li>
+            <li>Dimensions = taille choisie (S/M/L). Custom CSS si besoin : <code>body { background-color: rgba(0,0,0,0); }</code></li>
+            <li>Ne pas activer de fond de couleur sur la source — seul le widget a un fond.</li>
+            <li>Cocher « Shutdown source when not visible » optionnel ; garder « Refresh browser when scene becomes active » pour resync.</li>
+            <li>Ouvrir cette page <code>settings.html</code> dans un dock navigateur OBS pour ajuster en live.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">Enregistrer</button>
+        <button type="button" class="btn-secondary" id="btn-test-api">Tester API</button>
+        <button type="button" class="btn-ghost" id="btn-reset">Réinitialiser</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/data-api.js"></script>
+  <script src="js/live-se.js"></script>
+  <script src="js/live-sl.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/widget.js"></script>
+  <script>
+    (function () {
+      var Store = HelliasStore;
+      var form = document.getElementById('settings-form');
+      var previewFrame = document.getElementById('preview-frame');
+      var previewRoot = document.getElementById('preview-root');
+      var statusBar = document.getElementById('status-bar');
+      var liveSource = document.getElementById('liveSource');
+      var seFields = document.getElementById('se-fields');
+      var slFields = document.getElementById('sl-fields');
+      var bgOpacity = document.getElementById('bgOpacity');
+      var bgOpacityVal = document.getElementById('bgOpacityVal');
+      var demoModeEl = document.getElementById('demoMode');
+
+      var previewWidget = new HelliasWidget(previewRoot, { previewOnly: true });
+      previewWidget.init();
+
+      function setStatus(msg, kind) {
+        statusBar.textContent = msg;
+        statusBar.className = 'status-bar' + (kind ? ' ' + kind : '');
+      }
+
+      function toggleLiveFields() {
+        var v = liveSource.value;
+        seFields.hidden = v !== 'se';
+        slFields.hidden = v !== 'sl';
+      }
+
+      function cfgToForm(cfg) {
+        document.getElementById('channelId').value = cfg.channelId || '';
+        document.getElementById('goal').value = cfg.goal;
+        document.getElementById('pollInterval').value = cfg.pollInterval;
+        document.getElementById('pointsOverride').value = cfg.pointsOverride != null && cfg.pointsOverride !== '' ? cfg.pointsOverride : '';
+        document.getElementById('label').value = cfg.label;
+        document.getElementById('streakPast').value = cfg.streakPast;
+        document.getElementById('streakOverride').value = cfg.streakOverride != null && cfg.streakOverride !== '' ? cfg.streakOverride : '';
+        liveSource.value = cfg.liveSource || 'none';
+        document.getElementById('seToken').value = cfg.seToken || '';
+        document.getElementById('seChannelId').value = cfg.seChannelId || '';
+        document.getElementById('slSocketToken').value = cfg.slSocketToken || '';
+        document.getElementById('size').value = cfg.size || 'M';
+        document.getElementById('anchor').value = cfg.anchor || 'top-left';
+        bgOpacity.value = cfg.bgOpacity != null ? cfg.bgOpacity : 1;
+        bgOpacityVal.textContent = Math.round(bgOpacity.value * 100);
+        document.getElementById('colorAccent').value = cfg.colors.accent;
+        document.getElementById('colorBg').value = cfg.colors.bg;
+        document.getElementById('colorText').value = cfg.colors.text;
+        document.getElementById('colorGrid').value = cfg.colors.grid;
+        demoModeEl.checked = !!cfg.demoMode;
+        toggleLiveFields();
+        updatePreviewSize(cfg);
+        previewFrame.setAttribute('data-anchor', cfg.anchor || 'top-left');
+      }
+
+      function formToCfg() {
+        var po = document.getElementById('pointsOverride').value;
+        var so = document.getElementById('streakOverride').value;
+        return {
+          channelId: document.getElementById('channelId').value.trim(),
+          goal: Number(document.getElementById('goal').value) || 300,
+          pollInterval: Number(document.getElementById('pollInterval').value) || 45,
+          pointsOverride: po === '' ? null : Number(po),
+          label: document.getElementById('label').value || '70/30',
+          streakPast: Number(document.getElementById('streakPast').value) || 0,
+          streakOverride: so === '' ? null : Number(so),
+          liveSource: liveSource.value,
+          seToken: document.getElementById('seToken').value.trim(),
+          seChannelId: document.getElementById('seChannelId').value.trim(),
+          slSocketToken: document.getElementById('slSocketToken').value.trim(),
+          size: document.getElementById('size').value,
+          anchor: document.getElementById('anchor').value,
+          bgOpacity: Number(bgOpacity.value),
+          demoMode: demoModeEl.checked,
+          colors: {
+            accent: document.getElementById('colorAccent').value,
+            bg: document.getElementById('colorBg').value,
+            text: document.getElementById('colorText').value,
+            grid: document.getElementById('colorGrid').value
+          }
+        };
+      }
+
+      function updatePreviewSize(cfg) {
+        var sz = Store.SIZES[cfg.size || 'M'] || Store.SIZES.M;
+        previewRoot.style.width = sz.width + 'px';
+        previewRoot.style.height = sz.height + 'px';
+      }
+
+      function saveAndSync() {
+        var partial = formToCfg();
+        if (!partial.demoMode) {
+          partial.optimisticDelta = 0;
+        }
+        var cfg = Store.save(partial);
+        updatePreviewSize(cfg);
+        previewFrame.setAttribute('data-anchor', cfg.anchor);
+        previewWidget.applyConfig(cfg);
+        setStatus(cfg.demoMode ? 'Mode démo actif.' : 'Enregistré.', 'ok');
+        return cfg;
+      }
+
+      cfgToForm(Store.load());
+      previewWidget.applyConfig(Store.load());
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        saveAndSync();
+      });
+
+      liveSource.addEventListener('change', toggleLiveFields);
+
+      bgOpacity.addEventListener('input', function () {
+        bgOpacityVal.textContent = Math.round(bgOpacity.value * 100);
+      });
+
+      demoModeEl.addEventListener('change', function () {
+        saveAndSync();
+      });
+
+      document.getElementById('btn-test-api').addEventListener('click', function () {
+        var cfg = formToCfg();
+        if (!cfg.channelId) {
+          setStatus('Channel ID requis.', 'err');
+          return;
+        }
+        setStatus('Test API…');
+        var api = new HelliasDataApi(function (p) {
+          Store.save({ points: p.points, channelId: cfg.channelId });
+          previewWidget.applyConfig(Store.load());
+          setStatus('API OK — ' + p.points + ' Plus Points', 'ok');
+        }, function (err) {
+          setStatus('Erreur API : ' + err.message, 'err');
+        });
+        api.poll(cfg);
+      });
+
+      document.getElementById('btn-reset').addEventListener('click', function () {
+        if (confirm('Réinitialiser tous les réglages ?')) {
+          localStorage.removeItem(Store.STORAGE_KEY);
+          cfgToForm(Store.load());
+          Store.save({});
+          previewWidget.applyConfig(Store.load());
+          setStatus('Réinitialisé.', 'ok');
+        }
+      });
+
+      document.getElementById('btn-open-overlay').addEventListener('click', function () {
+        window.open('overlay.html', '_blank');
+      });
+
+      document.getElementById('btn-preview-up').addEventListener('click', function () {
+        saveAndSync();
+        previewWidget.previewAnimUp();
+        setStatus('Anim level up.', 'ok');
+      });
+
+      document.getElementById('btn-preview-down').addEventListener('click', function () {
+        saveAndSync();
+        previewWidget.previewAnimDown();
+        setStatus('Anim level down.', 'ok');
+      });
+
+      Store.subscribe(function (cfg) {
+        updatePreviewSize(cfg);
+      });
+    })();
+  </script>
+</body>
+</html>

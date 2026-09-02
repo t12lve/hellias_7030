@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hellias 70/30 — Overlay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/widget.css">
+</head>
+<body>
+  <div id="overlay-root" data-anchor="top-left"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/data-api.js"></script>
+  <script src="js/live-se.js"></script>
+  <script src="js/live-sl.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/widget.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var root = document.getElementById('overlay-root');
+      var widget = new HelliasWidget(root);
+      widget.init();
+      window.__helliasWidget = widget;
+    });
+  </script>
+</body>
+</html>
