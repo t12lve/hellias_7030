@@ -5,8 +5,10 @@ Widget overlay pour OBS, Streamlabs et StreamElements. Par défaut : **Sub Point
 ## Démo GitHub Pages
 
 - Accueil : https://t12lve.github.io/hellias_7030/
-- Réglages : https://t12lve.github.io/hellias_7030/settings.html
-- Overlay : https://t12lve.github.io/hellias_7030/overlay.html
+- Réglages OBS : https://t12lve.github.io/hellias_7030/settings.html
+- Onglet Code Streamlabs : https://t12lve.github.io/hellias_7030/settings.html#streamlabs
+- Mode d'emploi pas-à-pas (Aide) : https://t12lve.github.io/hellias_7030/aide.html
+- Overlay transparent : https://t12lve.github.io/hellias_7030/overlay.html
 
 ## Fichiers
 

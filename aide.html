@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hellias 70/30 — Mode d'emploi & Aide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8ff00;
+      --bg: #0c0c0e;
+      --surface: #1a1a1f;
+      --surface-2: #24242c;
+      --text: #f0f0f0;
+      --muted: #9a9aa3;
+      --border: #2e2e36;
+      --ok: #7cfc7c;
+      --font-mono: 'IBM Plex Mono', Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(12, 12, 14, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand h1 {
+      margin: 0;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.25rem;
+      color: var(--accent);
+    }
+    .brand p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+    .nav-links a.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .container {
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+    .intro-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-hero h2 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 1.4rem;
+    }
+    .intro-hero p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: border-color 0.2s;
+    }
+    .step-card:hover {
+      border-color: rgba(200, 255, 0, 0.4);
+    }
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .step-badge {
+      width: 34px;
+      height: 34px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .step-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .code-box {
+      position: relative;
+      background: #09090b;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin: 16px 0;
+      overflow: hidden;
+    }
+    .code-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .code-box pre {
+      margin: 0;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #a6e22e;
+      line-height: 1.5;
+      max-height: 280px;
+    }
+    .btn-copy {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-copy:hover {
+      background: #d4ff26;
+    }
+    .btn-copy:active {
+      transform: scale(0.96);
+    }
+    ol, ul {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .alert-tip {
+      background: rgba(200, 255, 0, 0.08);
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 0.9rem;
+    }
+    .alert-info {
+      background: rgba(0, 229, 255, 0.08);
+      border-left: 3px solid #00e5ff;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 0.9rem;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .palette-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+    .palette-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Hellias 70/30</h1>
+      <p>Mode d'emploi &amp; guide d'installation pas-à-pas</p>
+    </div>
+    <nav class="nav-links">
+      <a href="settings.html">Réglages</a>
+      <a href="settings.html#streamlabs">Code Streamlabs</a>
+      <a href="overlay.html" target="_blank">Overlay OBS</a>
+      <a href="index.html">Accueil</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="intro-hero">
+      <h2>Guide d'installation pour débutants</h2>
+      <p>Ce guide vous explique pas-à-pas comment transformer votre barre d'abonnements Streamlabs Sub Goal en widget néon cyberpunk Hellias 70/30.</p>
+      <div class="alert-tip">
+        💡 <strong>Pas de panique :</strong> aucune compétence technique n'est requise. Il suffit de faire 3 copier-coller dans votre tableau de bord Streamlabs !
+      </div>
+    </div>
+
+    <!-- Étape 1 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">1</div>
+        <h3>Ouvrir Streamlabs Dashboard</h3>
+      </div>
+      <ol>
+        <li>Rendez-vous sur votre <a href="https://streamlabs.com/dashboard" target="_blank" rel="noopener" style="color:var(--accent);">Dashboard Streamlabs</a> et connectez-vous avec votre compte Twitch.</li>
+        <li>Dans le menu de gauche, cliquez sur <strong>All Widgets</strong> (Tous les widgets), puis sur <strong>Sub Goal</strong> (Objectif d'abonnements).</li>
+        <li>Définissez votre titre (ex. <code>Sub Points</code>) et votre objectif cible (ex. <code>800</code>), puis démarrez l'objectif si ce n'est pas déjà fait.</li>
+      </ol>
+    </div>
+
+    <!-- Étape 2 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">2</div>
+        <h3>Activer "HTML/CSS personnalisés"</h3>
+      </div>
+      <ol>
+        <li>Faites défiler la page de Streamlabs vers le bas jusqu'à l'encart <strong>HTML/CSS personnalisés</strong> (Custom HTML/CSS).</li>
+        <li>Basculez l'interrupteur sur <strong>Activé</strong> (Enabled).</li>
+        <li>Trois onglets apparaissent au-dessus de la boîte de code : <strong>HTML</strong>, <strong>CSS</strong>, et <strong>JS</strong>.</li>
+      </ol>
+    </div>
+
+    <!-- Étape 3 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">3</div>
+        <h3>Copier-coller les 3 onglets</h3>
+      </div>
+      <p>Remplir les 3 onglets un par un en effaçant le texte existant :</p>
+
+      <h4>🔹 Onglet HTML :</h4>
+      <div class="code-box">
+        <div class="code-box-header">
+          <span>Onglet HTML</span>
+          <button type="button" class="btn-copy" data-target="code-block-html">Copier le HTML</button>
+        </div>
+        <pre id="code-block-html">&lt;!-- Hellias 70/30 — Streamlabs Sub Goal Custom Widget --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=Libre+Baskerville:wght@700&amp;display=swap" rel="stylesheet"&gt;
+
+&lt;div class="hellias-goal-shell custom__container" id="hellias-goal"&gt;
+  &lt;div class="hellias-blobs" aria-hidden="true"&gt;
+    &lt;div class="hellias-blob"&gt;&lt;/div&gt;
+    &lt;div class="hellias-blob"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="hellias-content"&gt;
+    &lt;div class="hellias-header custom__current-amount"&gt;
+      &lt;span class="hellias-label custom__title" id="goal-title"&gt;Sub Points&lt;/span&gt;
+      &lt;span class="hellias-counter"&gt;
+        &lt;span class="current" id="current-amount"&gt;0&lt;/span&gt;
+        &lt;span class="sep"&gt;/&lt;/span&gt;
+        &lt;span class="goal custom__amount" id="target-amount"&gt;800&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="hellias-bar-wrap"&gt;
+      &lt;div class="hellias-bar-track"&gt;
+        &lt;div class="hellias-bar-fill custom__bar" id="progress-bar" style="width: 0%;"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="hellias-footer" id="hellias-footer"&gt;
+      &lt;div class="hellias-streak" id="goal-streak"&gt;
+        &lt;span class="streak-dot" data-dot="1"&gt;&lt;/span&gt;
+        &lt;span class="streak-dot" data-dot="2"&gt;&lt;/span&gt;
+        &lt;span class="streak-dot" data-dot="3"&gt;&lt;/span&gt;
+        &lt;span class="streak-text" id="goal-streak-text"&gt;0/3&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="hellias-badge" id="goal-badge" hidden&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+
+      <h4>🔹 Onglet CSS :</h4>
+      <div class="code-box">
+        <div class="code-box-header">
+          <span>Onglet CSS</span>
+          <button type="button" class="btn-copy" data-target="code-block-css">Copier le CSS</button>
+        </div>
+        <pre id="code-block-css">/* Hellias 70/30 — Thème pour Streamlabs Sub Goal */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Libre+Baskerville:wght@700&display=swap');
+
+:root {
+  --accent: #c8ff00; /* Couleur d'accent néon */
+  --bg: #1a1a1e;     /* Fond sombre */
+  --text: #f0f0f0;   /* Couleur du texte */
+  --grid: #000000;   /* Lignes de la grille */
+  --bg-opacity: 1;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'Consolas', monospace;
+  color: var(--text, #f0f0f0);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+}
+
+.hellias-goal-shell,
+.custom__container {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--bg, #1a1a1e) calc(var(--bg-opacity, 1) * 100%), transparent);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'Consolas', monospace;
+  color: var(--text, #f0f0f0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hellias-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.35;
+}
+
+.hellias-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: #0d0d10;
+  filter: blur(18px);
+}
+
+.hellias-blob:nth-child(1) {
+  width: 70%;
+  height: 90%;
+  top: -30%;
+  left: -20%;
+}
+
+.hellias-blob:nth-child(2) {
+  width: 50%;
+  height: 60%;
+  bottom: -25%;
+  right: -10%;
+}
+
+.hellias-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hellias-header,
+.custom__current-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.hellias-label,
+#goal-title,
+.custom__title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--text, #f0f0f0);
+}
+
+.hellias-counter,
+.custom__current-amount span,
+.custom__amount {
+  font-family: 'IBM Plex Mono', Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.hellias-counter .sep {
+  opacity: 0.5;
+  margin: 0 3px;
+}
+
+.current,
+#current-amount {
+  color: var(--accent, #c8ff00);
+}
+
+#target-amount,
+.custom__amount {
+  opacity: 0.9;
+}
+
+.hellias-bar-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hellias-bar-track {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hellias-bar-fill,
+#progress-bar,
+.custom__bar {
+  height: 18px;
+  background-color: var(--accent, #c8ff00);
+  background-image:
+    linear-gradient(var(--grid, #000000) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid, #000000) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-blend-mode: multiply;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, #c8ff00) 50%, transparent);
+}
+
+.shadow-overlay {
+  display: none !important;
+}
+
+.hellias-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hellias-streak {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.streak-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.streak-dot.filled {
+  background: var(--accent, #c8ff00);
+  border-color: var(--accent, #c8ff00);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent, #c8ff00) 65%, transparent);
+  transform: scale(1.15);
+}
+
+.streak-text {
+  font-size: 11px;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+
+@keyframes subGlow {
+  0% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+  30% { transform: scale(1.025); box-shadow: 0 0 24px color-mix(in srgb, var(--accent, #c8ff00) 45%, transparent), 0 8px 24px rgba(0, 0, 0, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
+}
+
+.anim-sub {
+  animation: subGlow 0.85s ease-out;
+}</pre>
+      </div>
+
+      <h4>🔹 Onglet JS :</h4>
+      <div class="code-box">
+        <div class="code-box-header">
+          <span>Onglet JS</span>
+          <button type="button" class="btn-copy" data-target="code-block-js">Copier le JS</button>
+        </div>
+        <pre id="code-block-js">// Hellias 70/30 — Streamlabs Sub Goal Custom Widget Script
+(function () {
+  'use strict';
+
+  var currentPoints = 0;
+  var targetGoal = 800;
+  var pastMonths = 0; // Mois passés validés (0-2)
+
+  var titleEl = document.getElementById('goal-title');
+  var currentEl = document.getElementById('current-amount') || document.getElementById('goal-current');
+  var totalEl = document.getElementById('target-amount') || document.getElementById('goal-total');
+  var fillEl = document.getElementById('progress-bar') || document.getElementById('goal-bar-fill');
+  var shellEl = document.getElementById('hellias-goal') || document.querySelector('.custom__container');
+  var streakDots = document.querySelectorAll('.streak-dot');
+  var streakText = document.getElementById('goal-streak-text');
+  var footerEl = document.getElementById('hellias-footer');
+
+  function updateDisplay(current, target, title, animate) {
+    if (title && titleEl) titleEl.textContent = title;
+    var numCurrent = Number(current) || 0;
+    var numTarget = Number(target) || 800;
+    currentPoints = numCurrent;
+    targetGoal = numTarget;
+
+    if (currentEl) currentEl.textContent = numCurrent;
+    if (totalEl) totalEl.textContent = numTarget;
+
+    var pct = numTarget > 0 ? Math.min(100, Math.max(0, (numCurrent / numTarget) * 100)) : 0;
+    if (fillEl) fillEl.style.width = pct + '%';
+
+    // Calcul du streak 3 mois : mois passés + 1 si objectif du mois atteint
+    var currentMonthAchieved = numCurrent >= numTarget ? 1 : 0;
+    var totalStreak = Math.min(3, pastMonths + currentMonthAchieved);
+
+    if (streakDots && streakDots.length) {
+      streakDots.forEach(function (dot, idx) {
+        if (idx < totalStreak) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+      });
+    }
+
+    if (streakText) streakText.textContent = totalStreak + '/3';
+
+    if (animate && shellEl) {
+      shellEl.classList.remove('anim-sub');
+      void shellEl.offsetWidth; // Force le reflow CSS
+      shellEl.classList.add('anim-sub');
+    }
+  }
+
+  // Initialisation au chargement
+  document.addEventListener('goalLoad', function (obj) {
+    if (!obj || !obj.detail) return;
+    var d = obj.detail;
+    updateDisplay(d.amount ? d.amount.current : 0, d.amount ? d.amount.target : 800, d.title || 'Sub Points', false);
+  });
+
+  // Mise à jour en direct lors d'un sub
+  document.addEventListener('goalEvent', function (obj) {
+    if (!obj || !obj.detail) return;
+    var d = obj.detail;
+    updateDisplay(d.amount ? d.amount.current : 0, d.amount ? d.amount.target : targetGoal, null, true);
+  });
+})();</pre>
+      </div>
+    </div>
+
+    <!-- Étape 4 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">4</div>
+        <h3>Sauvegarder et copier l'URL Streamlabs</h3>
+      </div>
+      <ol>
+        <li>Descendez tout en bas de la page Streamlabs et cliquez sur le gros bouton vert <strong>Enregistrer les paramètres</strong> (Save Settings).</li>
+        <li>Remontez en haut de la page : copiez l'URL située dans l'encadré <strong>Widget URL</strong> (cliquez sur <em>Copier</em>).</li>
+      </ol>
+    </div>
+
+    <!-- Étape 5 -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">5</div>
+        <h3>Ajouter dans OBS Studio</h3>
+      </div>
+      <ol>
+        <li>Dans OBS Studio, faites <strong>Sources → + → Navigateur (Browser)</strong>.</li>
+        <li>Collez votre URL Streamlabs dans le champ <strong>URL</strong>.</li>
+        <li>Réglez les dimensions : <strong>Largeur = 460</strong>, <strong>Hauteur = 120</strong>.</li>
+        <li>Cochez la case <em>Actualiser le navigateur lorsque la scène devient active</em>.</li>
+        <li>Cliquez sur <strong>OK</strong>. Votre barre est en ligne !</li>
+      </ol>
+    </div>
+
+    <!-- Couleurs -->
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">🎨</div>
+        <h3>Personnaliser la couleur néon</h3>
+      </div>
+      <p>Pour changer la couleur d'accent (par défaut <code>#c8ff00</code>), modifiez simplement la ligne <code>--accent: ...;</code> dans l'onglet CSS :</p>
+      <div class="palette-grid">
+        <div class="palette-card"><div class="palette-swatch" style="background:#c8ff00;"></div>#c8ff00 (Hellias Néon)</div>
+        <div class="palette-card"><div class="palette-swatch" style="background:#ff2d95;"></div>#ff2d95 (Cyber Rose)</div>
+        <div class="palette-card"><div class="palette-swatch" style="background:#00e5ff;"></div>#00e5ff (Tron Cyan)</div>
+        <div class="palette-card"><div class="palette-swatch" style="background:#bd00ff;"></div>#bd00ff (Synthwave)</div>
+        <div class="palette-card"><div class="palette-swatch" style="background:#00ff88;"></div>#00ff88 (Émeraude)</div>
+        <div class="palette-card"><div class="palette-swatch" style="background:#ff6600;"></div>#ff6600 (Orange Feu)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.btn-copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId = btn.getAttribute('data-target');
+        var pre = document.getElementById(targetId);
+        if (pre) {
+          navigator.clipboard.writeText(pre.textContent).then(function () {
+            var old = btn.textContent;
+            btn.textContent = '✓ Copié !';
+            btn.style.background = '#7cfc7c';
+            btn.style.color = '#000';
+            setTimeout(function () {
+              btn.textContent = old;
+              btn.style.background = '';
+              btn.style.color = '';
+            }, 1800);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

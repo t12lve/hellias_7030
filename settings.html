@@ -21,13 +21,28 @@
         <button type="button" class="btn btn-ghost" id="btn-open-overlay">Ouvrir overlay</button>
         <button type="button" class="btn btn-secondary" id="btn-export-streamlabs">Code Streamlabs</button>
         <button type="button" class="btn btn-secondary" id="btn-test-api">Tester API</button>
-        <button type="submit" form="settings-form" class="btn btn-primary">Enregistrer</button>
+        <button type="submit" form="settings-form" class="btn btn-primary" id="btn-submit-form">Enregistrer</button>
       </div>
     </header>
 
+    <!-- Navigation par Onglets Principaux -->
+    <nav class="main-nav-bar" role="tablist" aria-label="Navigation principale">
+      <button type="button" class="main-tab-btn is-active" id="nav-btn-obs" data-view="view-obs">
+        <span>🎮</span> Réglages Overlay OBS
+      </button>
+      <button type="button" class="main-tab-btn" id="nav-btn-streamlabs" data-view="view-streamlabs">
+        <span>⚡</span> Streamlabs (HTML/CSS personnalisé)
+      </button>
+      <a href="aide.html" class="main-tab-link" target="_blank" rel="noopener">
+        <span>📖</span> Mode d'emploi pas-à-pas ↗
+      </a>
+    </nav>
+
     <div class="settings-body">
       <main class="settings-main">
-        <form id="settings-form" class="settings-main-inner">
+        <!-- VUE 1 : Formulaire Réglages Overlay OBS -->
+        <div class="tab-view is-active" id="view-obs">
+          <form id="settings-form" class="settings-main-inner">
           <p class="info-banner" id="sub-goal-banner" hidden>
             Compteur = <strong>Sub Points</strong> communautaire (ex. 476/800), pas le Plus Goal officiel Twitch (18/100).
           </p>
@@ -290,7 +305,75 @@
             <button type="button" class="btn btn-danger-ghost" id="btn-reset">Réinitialiser les réglages</button>
           </div>
         </form>
-      </main>
+      </div>
+
+      <!-- VUE 2 : Onglet Dédié Custom Code Streamlabs -->
+      <div class="tab-view" id="view-streamlabs">
+        <div class="settings-main-inner">
+          <section class="section">
+            <div class="section-head">
+              <span class="step-num" aria-hidden="true">⚡</span>
+              <div>
+                <h2>Sub Goal Streamlabs (HTML / CSS personnalisés)</h2>
+                <p class="section-desc">Codes prêts à coller dans <strong>Dashboard Streamlabs &gt; All Widgets &gt; Sub Goal &gt; Enable Custom HTML/CSS</strong>.</p>
+              </div>
+            </div>
+            <div class="section-body">
+              <div style="background:rgba(200,255,0,0.08); border-left:3px solid var(--accent); padding:12px 16px; border-radius:4px; font-size:0.88rem; margin-bottom:18px;">
+                💡 <strong>Guide débutant complet :</strong> Vous n'êtes pas familier avec Streamlabs ? Consultez notre <a href="aide.html" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">Mode d'emploi illustré pas-à-pas ↗</a>.
+              </div>
+
+              <!-- Sous-onglets de code -->
+              <div class="modal-tabs" role="tablist" style="margin-bottom:14px; border-radius:6px; background:var(--bg);">
+                <button type="button" class="tab-btn is-active" data-sl-pane="sl-tab-html">HTML</button>
+                <button type="button" class="tab-btn" data-sl-pane="sl-tab-css">CSS (personnalisé)</button>
+                <button type="button" class="tab-btn" data-sl-pane="sl-tab-js">JS</button>
+                <button type="button" class="tab-btn" data-sl-pane="sl-tab-fields">Custom Fields (JSON)</button>
+              </div>
+
+              <div class="sl-panes">
+                <div class="sl-pane is-active" id="sl-tab-html">
+                  <div class="code-toolbar" style="margin-bottom:8px;">
+                    <span class="code-tip">1. Remplacez le texte dans l'onglet <strong>HTML</strong> de Streamlabs :</span>
+                    <button type="button" class="btn btn-primary btn-copy" data-target="sl-code-html">Copier le HTML</button>
+                  </div>
+                  <textarea class="code-area" id="sl-code-html" readonly spellcheck="false" style="height:320px;"></textarea>
+                </div>
+
+                <div class="sl-pane" id="sl-tab-css" style="display:none;">
+                  <div class="code-toolbar" style="margin-bottom:8px;">
+                    <span class="code-tip">2. Remplacez le texte dans l'onglet <strong>CSS</strong> (vos couleurs y sont injectées) :</span>
+                    <button type="button" class="btn btn-primary btn-copy" data-target="sl-code-css">Copier le CSS</button>
+                  </div>
+                  <textarea class="code-area" id="sl-code-css" readonly spellcheck="false" style="height:320px;"></textarea>
+                </div>
+
+                <div class="sl-pane" id="sl-tab-js" style="display:none;">
+                  <div class="code-toolbar" style="margin-bottom:8px;">
+                    <span class="code-tip">3. Remplacez le texte dans l'onglet <strong>JS</strong> de Streamlabs :</span>
+                    <button type="button" class="btn btn-primary btn-copy" data-target="sl-code-js">Copier le JS</button>
+                  </div>
+                  <textarea class="code-area" id="sl-code-js" readonly spellcheck="false" style="height:320px;"></textarea>
+                </div>
+
+                <div class="sl-pane" id="sl-tab-fields" style="display:none;">
+                  <div class="code-toolbar" style="margin-bottom:8px;">
+                    <span class="code-tip">4. Optionnel : collez dans <strong>Custom Fields</strong> pour éditer les couleurs dans Streamlabs :</span>
+                    <button type="button" class="btn btn-primary btn-copy" data-target="sl-code-fields">Copier le JSON</button>
+                  </div>
+                  <textarea class="code-area" id="sl-code-fields" readonly spellcheck="false" style="height:320px;"></textarea>
+                </div>
+              </div>
+
+              <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a href="streamlabs/test-streamlabs.html" target="_blank" rel="noopener" class="btn btn-secondary">Ouvrir le simulateur de test ↗</a>
+                <a href="aide.html" target="_blank" rel="noopener" class="btn btn-ghost">Voir le guide d'installation ↗</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
 
       <aside class="settings-aside" aria-label="Aperçu et tests">
         <p class="aside-title">Aperçu live</p>
@@ -1060,6 +1143,89 @@
           }
         });
       });
+
+      /* ── Gestion des Vues / Onglets Principaux (Overlay OBS vs Streamlabs) ── */
+      var navBtnObs = document.getElementById('nav-btn-obs');
+      var navBtnSl = document.getElementById('nav-btn-streamlabs');
+      var viewObs = document.getElementById('view-obs');
+      var viewSl = document.getElementById('view-streamlabs');
+      var btnSubmitForm = document.getElementById('btn-submit-form');
+      var slCodeHtml = document.getElementById('sl-code-html');
+      var slCodeCss = document.getElementById('sl-code-css');
+      var slCodeJs = document.getElementById('sl-code-js');
+      var slCodeFields = document.getElementById('sl-code-fields');
+
+      function updateSlTabCode() {
+        var cfg = Store.load();
+        if (slCodeHtml) slCodeHtml.value = SL_HTML_CODE;
+        if (slCodeCss) slCodeCss.value = generateSlCss(cfg.colors);
+        if (slCodeJs) slCodeJs.value = SL_JS_CODE;
+        if (slCodeFields) slCodeFields.value = SL_FIELDS_CODE;
+      }
+
+      function switchMainTab(targetView) {
+        if (targetView === 'view-streamlabs') {
+          navBtnObs.classList.remove('is-active');
+          navBtnSl.classList.add('is-active');
+          viewObs.classList.remove('is-active');
+          viewSl.classList.add('is-active');
+          if (btnSubmitForm) btnSubmitForm.style.display = 'none';
+          updateSlTabCode();
+          window.location.hash = 'streamlabs';
+        } else {
+          navBtnSl.classList.remove('is-active');
+          navBtnObs.classList.add('is-active');
+          viewSl.classList.remove('is-active');
+          viewObs.classList.add('is-active');
+          if (btnSubmitForm) btnSubmitForm.style.display = '';
+          if (window.location.hash === '#streamlabs') {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+          }
+        }
+      }
+
+      if (navBtnObs) navBtnObs.addEventListener('click', function () { switchMainTab('view-obs'); });
+      if (navBtnSl) navBtnSl.addEventListener('click', function () { switchMainTab('view-streamlabs'); });
+
+      // Bouton Code Streamlabs dans la topbar ou dans le volet aside
+      document.getElementById('btn-export-streamlabs').addEventListener('click', function () {
+        switchMainTab('view-streamlabs');
+      });
+      if (btnAsideSl) {
+        btnAsideSl.addEventListener('click', function () {
+          switchMainTab('view-streamlabs');
+        });
+      }
+
+      // Sous-onglets dans la vue Streamlabs
+      var slSubTabBtns = document.querySelectorAll('[data-sl-pane]');
+      slSubTabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          slSubTabBtns.forEach(function (b) { b.classList.remove('is-active'); });
+          document.querySelectorAll('.sl-pane').forEach(function (pane) { pane.style.display = 'none'; pane.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          var targetPaneId = btn.getAttribute('data-sl-pane');
+          var targetPane = document.getElementById(targetPaneId);
+          if (targetPane) {
+            targetPane.style.display = 'block';
+            targetPane.classList.add('is-active');
+          }
+        });
+      });
+
+      // Si l'URL contient #streamlabs, basculer directement sur l'onglet Streamlabs
+      if (window.location.hash === '#streamlabs') {
+        switchMainTab('view-streamlabs');
+      }
+
+      // Mettre à jour le code Streamlabs lorsque les couleurs changent dans les réglages
+      ['colorAccent', 'colorBg', 'colorText', 'colorGrid'].forEach(function (id) {
+        var input = document.getElementById(id);
+        if (input) {
+          input.addEventListener('input', updateSlTabCode);
+        }
+      });
+      updateSlTabCode();
 
       Store.subscribe(function (cfg) {
         updatePreviewSize(cfg);
