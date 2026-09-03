@@ -19,6 +19,7 @@
       </div>
       <div class="topbar-actions">
         <button type="button" class="btn btn-ghost" id="btn-open-overlay">Ouvrir overlay</button>
+        <button type="button" class="btn btn-secondary" id="btn-export-streamlabs">Code Streamlabs</button>
         <button type="button" class="btn btn-secondary" id="btn-test-api">Tester API</button>
         <button type="submit" form="settings-form" class="btn btn-primary">Enregistrer</button>
       </div>
@@ -321,8 +322,72 @@
             <li>Dimensions = taille S / M / L · CSS : <code>body { background-color: rgba(0,0,0,0); }</code></li>
             <li>Après Enregistrer, l’overlay se met à jour (localStorage + BroadcastChannel)</li>
           </ol>
+          <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border);">
+            <p style="margin:0 0 6px; font-size:0.8rem; color:var(--muted);">Alternative widget natif Streamlabs :</p>
+            <button type="button" class="btn btn-secondary" id="btn-aside-streamlabs" style="width:100%; font-size:0.85rem;">Obtenir le code Custom HTML/CSS</button>
+          </div>
         </div>
       </aside>
+    </div>
+
+    <!-- Modal Export Streamlabs Custom HTML/CSS -->
+    <div class="modal-backdrop" id="modal-streamlabs" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <div>
+            <h2 id="modal-title">Code Custom HTML/CSS Streamlabs</h2>
+            <p class="modal-desc">À copier dans <strong>Dashboard Streamlabs &gt; All Widgets &gt; Sub Goal &gt; Enable Custom HTML/CSS</strong></p>
+          </div>
+          <button type="button" class="btn-close" id="modal-close" aria-label="Fermer">✕</button>
+        </div>
+
+        <div class="modal-tabs" role="tablist">
+          <button type="button" class="tab-btn is-active" data-tab="tab-html">HTML</button>
+          <button type="button" class="tab-btn" data-tab="tab-css">CSS (personnalisé)</button>
+          <button type="button" class="tab-btn" data-tab="tab-js">JS</button>
+          <button type="button" class="tab-btn" data-tab="tab-fields">Custom Fields (JSON)</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="tab-pane is-active" id="tab-html">
+            <div class="code-toolbar">
+              <span class="code-tip">Colle ce code dans l'onglet <strong>HTML</strong> de Streamlabs :</span>
+              <button type="button" class="btn btn-primary btn-copy" data-target="code-html">Copier le HTML</button>
+            </div>
+            <textarea class="code-area" id="code-html" readonly spellcheck="false"></textarea>
+          </div>
+
+          <div class="tab-pane" id="tab-css">
+            <div class="code-toolbar">
+              <span class="code-tip">Colle ce code dans l'onglet <strong>CSS</strong> (tes couleurs actuelles y sont injectées) :</span>
+              <button type="button" class="btn btn-primary btn-copy" data-target="code-css">Copier le CSS</button>
+            </div>
+            <textarea class="code-area" id="code-css" readonly spellcheck="false"></textarea>
+          </div>
+
+          <div class="tab-pane" id="tab-js">
+            <div class="code-toolbar">
+              <span class="code-tip">Colle ce code dans l'onglet <strong>JS</strong> de Streamlabs :</span>
+              <button type="button" class="btn btn-primary btn-copy" data-target="code-js">Copier le JS</button>
+            </div>
+            <textarea class="code-area" id="code-js" readonly spellcheck="false"></textarea>
+          </div>
+
+          <div class="tab-pane" id="tab-fields">
+            <div class="code-toolbar">
+              <span class="code-tip">Optionnel : colle dans <strong>Custom Fields</strong> pour éditer les couleurs dans Streamlabs :</span>
+              <button type="button" class="btn btn-primary btn-copy" data-target="code-fields">Copier le JSON</button>
+            </div>
+            <textarea class="code-area" id="code-fields" readonly spellcheck="false"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <a href="MODE_OPERATOIRE.md" target="_blank" class="btn btn-ghost">Mode opératoire (débutant) ↗</a>
+          <a href="streamlabs/test-streamlabs.html" target="_blank" class="btn btn-secondary">Banc d'essai Streamlabs ↗</a>
+          <button type="button" class="btn btn-primary" id="modal-done">Fermer</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -590,6 +655,410 @@
         saveAndSync();
         previewWidget.previewPlusLevelUp(2);
         setStatus('Level up L2.', 'ok');
+      });
+
+      /* ── Logique Export Streamlabs Custom HTML/CSS ── */
+      var modalSl = document.getElementById('modal-streamlabs');
+      var codeHtml = document.getElementById('code-html');
+      var codeCss = document.getElementById('code-css');
+      var codeJs = document.getElementById('code-js');
+      var codeFields = document.getElementById('code-fields');
+
+      var SL_HTML_CODE = '<!-- Hellias 70/30 — Streamlabs Sub Goal Custom Widget -->\n' +
+'<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+'<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">\n\n' +
+'<div class="hellias-goal-shell custom__container" id="hellias-goal">\n' +
+'  <div class="hellias-blobs" aria-hidden="true">\n' +
+'    <div class="hellias-blob"></div>\n' +
+'    <div class="hellias-blob"></div>\n' +
+'  </div>\n' +
+'  <div class="hellias-content">\n' +
+'    <div class="hellias-header custom__current-amount">\n' +
+'      <span class="hellias-label custom__title" id="goal-title">Sub Points</span>\n' +
+'      <span class="hellias-counter">\n' +
+'        <span class="current" id="current-amount">0</span>\n' +
+'        <span class="sep">/</span>\n' +
+'        <span class="goal custom__amount" id="target-amount">800</span>\n' +
+'      </span>\n' +
+'    </div>\n' +
+'    <div class="hellias-bar-wrap">\n' +
+'      <div class="hellias-bar-track">\n' +
+'        <div class="hellias-bar-fill custom__bar" id="progress-bar" style="width: 0%;"></div>\n' +
+'      </div>\n' +
+'    </div>\n' +
+'    <div class="hellias-footer" id="hellias-footer">\n' +
+'      <div class="hellias-streak" id="goal-streak">\n' +
+'        <span class="streak-dot" data-dot="1"></span>\n' +
+'        <span class="streak-dot" data-dot="2"></span>\n' +
+'        <span class="streak-dot" data-dot="3"></span>\n' +
+'        <span class="streak-text" id="goal-streak-text">0/3</span>\n' +
+'      </div>\n' +
+'      <div class="hellias-badge" id="goal-badge" hidden></div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</div>';
+
+      var SL_JS_CODE = '// Hellias 70/30 — Streamlabs Sub Goal Custom Widget Script\n' +
+'(function () {\n' +
+'  \'use strict\';\n\n' +
+'  var currentPoints = 0;\n' +
+'  var targetGoal = 800;\n' +
+'  var pastMonths = 0;\n\n' +
+'  var titleEl = document.getElementById(\'goal-title\');\n' +
+'  var currentEl = document.getElementById(\'current-amount\') || document.getElementById(\'goal-current\');\n' +
+'  var totalEl = document.getElementById(\'target-amount\') || document.getElementById(\'goal-total\');\n' +
+'  var fillEl = document.getElementById(\'progress-bar\') || document.getElementById(\'goal-bar-fill\');\n' +
+'  var shellEl = document.getElementById(\'hellias-goal\') || document.querySelector(\'.custom__container\');\n' +
+'  var streakDots = document.querySelectorAll(\'.streak-dot\');\n' +
+'  var streakText = document.getElementById(\'goal-streak-text\');\n' +
+'  var footerEl = document.getElementById(\'hellias-footer\');\n\n' +
+'  function updateDisplay(current, target, title, animate) {\n' +
+'    if (title && titleEl) titleEl.textContent = title;\n' +
+'    var numCurrent = Number(current) || 0;\n' +
+'    var numTarget = Number(target) || 800;\n' +
+'    currentPoints = numCurrent;\n' +
+'    targetGoal = numTarget;\n' +
+'    if (currentEl) currentEl.textContent = numCurrent;\n' +
+'    if (totalEl) totalEl.textContent = numTarget;\n' +
+'    var pct = numTarget > 0 ? Math.min(100, Math.max(0, (numCurrent / numTarget) * 100)) : 0;\n' +
+'    if (fillEl) fillEl.style.width = pct + \'%\';\n' +
+'    var currentMonthAchieved = numCurrent >= numTarget ? 1 : 0;\n' +
+'    var totalStreak = Math.min(3, pastMonths + currentMonthAchieved);\n' +
+'    if (streakDots && streakDots.length) {\n' +
+'      streakDots.forEach(function (dot, idx) {\n' +
+'        if (idx < totalStreak) dot.classList.add(\'filled\');\n' +
+'        else dot.classList.remove(\'filled\');\n' +
+'      });\n' +
+'    }\n' +
+'    if (streakText) streakText.textContent = totalStreak + \'/3\';\n' +
+'    if (animate && shellEl) {\n' +
+'      shellEl.classList.remove(\'anim-sub\');\n' +
+'      void shellEl.offsetWidth;\n' +
+'      shellEl.classList.add(\'anim-sub\');\n' +
+'    }\n' +
+'  }\n\n' +
+'  window.addEventListener(\'onWidgetLoad\', function (obj) {\n' +
+'    if (obj && obj.detail && obj.detail.fieldData) {\n' +
+'      var fd = obj.detail.fieldData;\n' +
+'      if (fd.streakPast !== undefined && fd.streakPast !== \'\') {\n' +
+'        pastMonths = parseInt(fd.streakPast, 10) || 0;\n' +
+'      }\n' +
+'      if (fd.showStreak === \'no\' || fd.showStreak === false) {\n' +
+'        if (footerEl) footerEl.style.display = \'none\';\n' +
+'      } else {\n' +
+'        if (footerEl) footerEl.style.display = \'flex\';\n' +
+'      }\n' +
+'      if (fd.customTitle && titleEl) titleEl.textContent = fd.customTitle;\n' +
+'    }\n' +
+'  });\n\n' +
+'  document.addEventListener(\'goalLoad\', function (obj) {\n' +
+'    if (!obj || !obj.detail) return;\n' +
+'    var d = obj.detail;\n' +
+'    updateDisplay(d.amount ? d.amount.current : 0, d.amount ? d.amount.target : 800, d.title || \'Sub Points\', false);\n' +
+'  });\n\n' +
+'  document.addEventListener(\'goalEvent\', function (obj) {\n' +
+'    if (!obj || !obj.detail) return;\n' +
+'    var d = obj.detail;\n' +
+'    updateDisplay(d.amount ? d.amount.current : 0, d.amount ? d.amount.target : targetGoal, null, true);\n' +
+'  });\n' +
+'})();';
+
+      var SL_FIELDS_CODE = '{\n' +
+'  "colorAccent": {\n' +
+'    "label": "Couleur Accent (Néon)",\n' +
+'    "type": "colorpicker",\n' +
+'    "value": "#c8ff00"\n' +
+'  },\n' +
+'  "colorBg": {\n' +
+'    "label": "Couleur Fond",\n' +
+'    "type": "colorpicker",\n' +
+'    "value": "#1a1a1e"\n' +
+'  },\n' +
+'  "colorText": {\n' +
+'    "label": "Couleur Texte",\n' +
+'    "type": "colorpicker",\n' +
+'    "value": "#f0f0f0"\n' +
+'  },\n' +
+'  "colorGrid": {\n' +
+'    "label": "Couleur Grille Jauge",\n' +
+'    "type": "colorpicker",\n' +
+'    "value": "#000000"\n' +
+'  },\n' +
+'  "showStreak": {\n' +
+'    "label": "Afficher le streak 3 mois",\n' +
+'    "type": "dropdown",\n' +
+'    "options": {\n' +
+'      "yes": "Oui (Pastilles + 0/3)",\n' +
+'      "no": "Non (Masquer)"\n' +
+'    },\n' +
+'    "value": "yes"\n' +
+'  },\n' +
+'  "streakPast": {\n' +
+'    "label": "Mois passés validés (0 à 2)",\n' +
+'    "type": "number",\n' +
+'    "value": 0,\n' +
+'    "min": 0,\n' +
+'    "max": 2,\n' +
+'    "step": 1\n' +
+'  },\n' +
+'  "customTitle": {\n' +
+'    "label": "Titre personnalisé (optionnel)",\n' +
+'    "type": "text",\n' +
+'    "value": ""\n' +
+'  }\n' +
+'}';
+
+      function generateSlCss(colors) {
+        var acc = (colors && colors.accent) || document.getElementById('colorAccent').value || '#c8ff00';
+        var bg = (colors && colors.bg) || document.getElementById('colorBg').value || '#1a1a1e';
+        var txt = (colors && colors.text) || document.getElementById('colorText').value || '#f0f0f0';
+        var grd = (colors && colors.grid) || document.getElementById('colorGrid').value || '#000000';
+
+        return '/* Hellias 70/30 — Thème Streamlabs Sub Goal (Custom CSS) */\n\n' +
+':root {\n' +
+'  --accent: ' + acc + ';\n' +
+'  --bg: ' + bg + ';\n' +
+'  --text: ' + txt + ';\n' +
+'  --grid: ' + grd + ';\n' +
+'  --bg-opacity: 1;\n' +
+'}\n\n' +
+'#wrap, .hellias-goal-shell {\n' +
+'  --accent: {colorAccent};\n' +
+'  --bg: {colorBg};\n' +
+'  --text: {colorText};\n' +
+'  --grid: {colorGrid};\n' +
+'}\n\n' +
+'html, body {\n' +
+'  margin: 0;\n' +
+'  padding: 0;\n' +
+'  width: 100%;\n' +
+'  height: 100%;\n' +
+'  background: transparent !important;\n' +
+'  overflow: hidden;\n' +
+'}\n\n' +
+'*, *::before, *::after {\n' +
+'  box-sizing: border-box;\n' +
+'}\n\n' +
+'#wrap {\n' +
+'  width: 100%;\n' +
+'  height: 100%;\n' +
+'  display: flex;\n' +
+'  align-items: center;\n' +
+'  justify-content: center;\n' +
+'  background: transparent !important;\n' +
+'}\n\n' +
+'.hellias-goal-shell {\n' +
+'  position: relative;\n' +
+'  width: 100%;\n' +
+'  max-width: 440px;\n' +
+'  padding: 12px 14px;\n' +
+'  background: color-mix(in srgb, var(--bg, ' + bg + ') 95%, transparent);\n' +
+'  border-radius: 6px;\n' +
+'  overflow: hidden;\n' +
+'  font-family: \'IBM Plex Mono\', \'Consolas\', monospace;\n' +
+'  color: var(--text, ' + txt + ');\n' +
+'  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);\n' +
+'  border: 1px solid rgba(255, 255, 255, 0.08);\n' +
+'  box-sizing: border-box;\n' +
+'  transition: transform 0.25s ease, box-shadow 0.25s ease;\n' +
+'}\n\n' +
+'.hellias-blobs {\n' +
+'  position: absolute;\n' +
+'  inset: 0;\n' +
+'  pointer-events: none;\n' +
+'  overflow: hidden;\n' +
+'  opacity: 0.35;\n' +
+'}\n\n' +
+'.hellias-blob {\n' +
+'  position: absolute;\n' +
+'  border-radius: 50%;\n' +
+'  background: #0d0d10;\n' +
+'  filter: blur(18px);\n' +
+'}\n\n' +
+'.hellias-blob:nth-child(1) {\n' +
+'  width: 70%;\n' +
+'  height: 90%;\n' +
+'  top: -30%;\n' +
+'  left: -20%;\n' +
+'}\n\n' +
+'.hellias-blob:nth-child(2) {\n' +
+'  width: 50%;\n' +
+'  height: 60%;\n' +
+'  bottom: -25%;\n' +
+'  right: -10%;\n' +
+'}\n\n' +
+'.hellias-content {\n' +
+'  position: relative;\n' +
+'  z-index: 1;\n' +
+'  display: flex;\n' +
+'  flex-direction: column;\n' +
+'  gap: 8px;\n' +
+'}\n\n' +
+'.hellias-header {\n' +
+'  display: flex;\n' +
+'  align-items: baseline;\n' +
+'  justify-content: space-between;\n' +
+'  gap: 8px;\n' +
+'}\n\n' +
+'.hellias-label {\n' +
+'  font-family: \'Libre Baskerville\', Georgia, serif;\n' +
+'  font-weight: 700;\n' +
+'  font-size: 16px;\n' +
+'  letter-spacing: 0.02em;\n' +
+'  line-height: 1;\n' +
+'  color: var(--text, ' + txt + ');\n' +
+'}\n\n' +
+'.hellias-counter {\n' +
+'  font-family: \'IBM Plex Mono\', Consolas, monospace;\n' +
+'  font-variant-numeric: tabular-nums;\n' +
+'  font-weight: 600;\n' +
+'  font-size: 15px;\n' +
+'  line-height: 1;\n' +
+'}\n\n' +
+'.hellias-counter .sep {\n' +
+'  opacity: 0.5;\n' +
+'  margin: 0 3px;\n' +
+'}\n\n' +
+'.hellias-counter .current {\n' +
+'  color: var(--accent, ' + acc + ');\n' +
+'}\n\n' +
+'.hellias-bar-wrap {\n' +
+'  position: relative;\n' +
+'  width: 100%;\n' +
+'}\n\n' +
+'.hellias-bar-track {\n' +
+'  position: relative;\n' +
+'  width: 100%;\n' +
+'  height: 18px;\n' +
+'  background: rgba(0, 0, 0, 0.55);\n' +
+'  border-radius: 3px;\n' +
+'  overflow: hidden;\n' +
+'  border: 1px solid rgba(255, 255, 255, 0.06);\n' +
+'}\n\n' +
+'.hellias-bar-fill {\n' +
+'  position: absolute;\n' +
+'  top: 0;\n' +
+'  left: 0;\n' +
+'  height: 100%;\n' +
+'  width: 0%;\n' +
+'  background-color: var(--accent, ' + acc + ');\n' +
+'  background-image:\n' +
+'    linear-gradient(var(--grid, ' + grd + ') 1px, transparent 1px),\n' +
+'    linear-gradient(90deg, var(--grid, ' + grd + ') 1px, transparent 1px);\n' +
+'  background-size: 8px 8px;\n' +
+'  background-blend-mode: multiply;\n' +
+'  border-radius: 2px;\n' +
+'  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);\n' +
+'  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, ' + acc + ') 50%, transparent);\n' +
+'}\n\n' +
+'.hellias-footer {\n' +
+'  display: flex;\n' +
+'  align-items: center;\n' +
+'  justify-content: space-between;\n' +
+'  gap: 8px;\n' +
+'}\n\n' +
+'.hellias-streak {\n' +
+'  display: flex;\n' +
+'  align-items: center;\n' +
+'  gap: 5px;\n' +
+'}\n\n' +
+'.streak-dot {\n' +
+'  width: 8px;\n' +
+'  height: 8px;\n' +
+'  border-radius: 50%;\n' +
+'  background: rgba(255, 255, 255, 0.2);\n' +
+'  border: 1px solid rgba(255, 255, 255, 0.25);\n' +
+'  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;\n' +
+'}\n\n' +
+'.streak-dot.filled {\n' +
+'  background: var(--accent, ' + acc + ');\n' +
+'  border-color: var(--accent, ' + acc + ');\n' +
+'  box-shadow: 0 0 8px color-mix(in srgb, var(--accent, ' + acc + ') 65%, transparent);\n' +
+'  transform: scale(1.15);\n' +
+'}\n\n' +
+'.streak-text {\n' +
+'  font-size: 11px;\n' +
+'  opacity: 0.75;\n' +
+'  margin-left: 4px;\n' +
+'}\n\n' +
+'.hellias-badge {\n' +
+'  font-size: 10px;\n' +
+'  letter-spacing: 0.03em;\n' +
+'  opacity: 0.85;\n' +
+'  color: var(--accent, ' + acc + ');\n' +
+'}\n\n' +
+'@keyframes subGlow {\n' +
+'  0% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }\n' +
+'  30% { transform: scale(1.025); box-shadow: 0 0 24px color-mix(in srgb, var(--accent, ' + acc + ') 45%, transparent), 0 8px 24px rgba(0, 0, 0, 0.6); }\n' +
+'  100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }\n' +
+'}\n\n' +
+'.anim-sub {\n' +
+'  animation: subGlow 0.85s ease-out;\n' +
+'}';
+      }
+
+      function openStreamlabsModal() {
+        var cfg = Store.load();
+        codeHtml.value = SL_HTML_CODE;
+        codeCss.value = generateSlCss(cfg.colors);
+        codeJs.value = SL_JS_CODE;
+        codeFields.value = SL_FIELDS_CODE;
+        modalSl.hidden = false;
+      }
+
+      function closeStreamlabsModal() {
+        modalSl.hidden = true;
+      }
+
+      document.getElementById('btn-export-streamlabs').addEventListener('click', openStreamlabsModal);
+      var btnAsideSl = document.getElementById('btn-aside-streamlabs');
+      if (btnAsideSl) btnAsideSl.addEventListener('click', openStreamlabsModal);
+
+      document.getElementById('modal-close').addEventListener('click', closeStreamlabsModal);
+      document.getElementById('modal-done').addEventListener('click', closeStreamlabsModal);
+      modalSl.addEventListener('click', function (e) {
+        if (e.target === modalSl) closeStreamlabsModal();
+      });
+
+      // Gestion des onglets de la modale
+      var modalTabs = document.querySelectorAll('.modal-tabs .tab-btn');
+      modalTabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          modalTabs.forEach(function (b) { b.classList.remove('is-active'); });
+          document.querySelectorAll('.modal-body .tab-pane').forEach(function (p) { p.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          var targetId = btn.getAttribute('data-tab');
+          var targetPane = document.getElementById(targetId);
+          if (targetPane) targetPane.classList.add('is-active');
+        });
+      });
+
+      // Boutons de copie
+      document.querySelectorAll('.btn-copy').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var targetId = btn.getAttribute('data-target');
+          var textarea = document.getElementById(targetId);
+          if (textarea) {
+            textarea.select();
+            navigator.clipboard.writeText(textarea.value).then(function () {
+              var prevText = btn.textContent;
+              btn.textContent = '✓ Copié !';
+              btn.style.background = '#7cfc7c';
+              btn.style.color = '#000';
+              setTimeout(function () {
+                btn.textContent = prevText;
+                btn.style.background = '';
+                btn.style.color = '';
+              }, 1800);
+            }).catch(function () {
+              document.execCommand('copy');
+              var prevText = btn.textContent;
+              btn.textContent = '✓ Copié !';
+              setTimeout(function () { btn.textContent = prevText; }, 1800);
+            });
+          }
+        });
       });
 
       Store.subscribe(function (cfg) {

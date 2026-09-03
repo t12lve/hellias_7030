@@ -1,0 +1,44 @@
+{
+  "colorAccent": {
+    "label": "Couleur Accent (Néon)",
+    "type": "colorpicker",
+    "value": "#c8ff00"
+  },
+  "colorBg": {
+    "label": "Couleur Fond",
+    "type": "colorpicker",
+    "value": "#1a1a1e"
+  },
+  "colorText": {
+    "label": "Couleur Texte",
+    "type": "colorpicker",
+    "value": "#f0f0f0"
+  },
+  "colorGrid": {
+    "label": "Couleur Grille Jauge",
+    "type": "colorpicker",
+    "value": "#000000"
+  },
+  "showStreak": {
+    "label": "Afficher le streak 3 mois",
+    "type": "dropdown",
+    "options": {
+      "yes": "Oui (Pastilles + 0/3)",
+      "no": "Non (Masquer)"
+    },
+    "value": "yes"
+  },
+  "streakPast": {
+    "label": "Mois passés validés (0 à 2)",
+    "type": "number",
+    "value": 0,
+    "min": 0,
+    "max": 2,
+    "step": 1
+  },
+  "customTitle": {
+    "label": "Titre personnalisé (optionnel)",
+    "type": "text",
+    "value": ""
+  }
+}

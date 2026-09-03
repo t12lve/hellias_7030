@@ -1,0 +1,38 @@
+<!-- Hellias 70/30 — Streamlabs Sub Goal Custom Widget -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+
+<div class="hellias-goal-shell custom__container" id="hellias-goal">
+  <div class="hellias-blobs" aria-hidden="true">
+    <div class="hellias-blob"></div>
+    <div class="hellias-blob"></div>
+  </div>
+  
+  <div class="hellias-content">
+    <div class="hellias-header custom__current-amount">
+      <span class="hellias-label custom__title" id="goal-title">Sub Points</span>
+      <span class="hellias-counter">
+        <span class="current" id="current-amount">0</span>
+        <span class="sep">/</span>
+        <span class="goal custom__amount" id="target-amount">800</span>
+      </span>
+    </div>
+    
+    <div class="hellias-bar-wrap">
+      <div class="hellias-bar-track">
+        <div class="hellias-bar-fill custom__bar" id="progress-bar" style="width: 0%;"></div>
+      </div>
+    </div>
+    
+    <div class="hellias-footer" id="hellias-footer">
+      <div class="hellias-streak" id="goal-streak">
+        <span class="streak-dot" data-dot="1"></span>
+        <span class="streak-dot" data-dot="2"></span>
+        <span class="streak-dot" data-dot="3"></span>
+        <span class="streak-text" id="goal-streak-text">0/3</span>
+      </div>
+      <div class="hellias-badge" id="goal-badge" hidden></div>
+    </div>
+  </div>
+</div>

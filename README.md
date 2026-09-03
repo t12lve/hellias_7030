@@ -10,12 +10,27 @@ Widget overlay pour OBS, Streamlabs et StreamElements. Par défaut : **Sub Point
 
 ## Fichiers
 
-| Fichier | Rôle |
-|---------|------|
+| Fichier / Dossier | Rôle |
+|-------------------|------|
+| `MODE_OPERATOIRE.md` | **Guide débutant pas-à-pas** pour installer le thème sur Streamlabs |
 | `overlay.html` | Source navigateur OBS — fond **100 % transparent**, widget seul visible |
-| `settings.html` | Réglages plein écran, preview damier, test API |
+| `settings.html` | Réglages plein écran, preview damier, test API, exporteur Streamlabs |
+| `streamlabs/` | **Pack Custom HTML/CSS/JS** pour le widget Sub Goal natif Streamlabs |
 | `js/` | Logique store, API, live SE/SL, widget, animations |
 | `css/` | Styles widget + settings |
+
+## Deux méthodes d'utilisation
+
+### Méthode 1 : Widget natif Streamlabs Sub Goal (Custom HTML/CSS)
+Idéal si vous utilisez déjà le widget Sub Goal de Streamlabs et voulez lui donner le look & feel Hellias 70/30 sans héberger de fichiers.
+👉 Consultez le [**Mode Opératoire Débutant (MODE_OPERATOIRE.md)**](MODE_OPERATOIRE.md) pour le tutoriel illustré complet.
+
+1. Allez sur votre **Dashboard Streamlabs → All Widgets → Sub Goal**.
+2. Activez **"Enable Custom HTML/CSS"**.
+3. Ouvrez `settings.html` et cliquez sur **"Code Streamlabs"** (ou consultez le dossier [`streamlabs/`](streamlabs/README.md)) pour copier-coller les 4 onglets : HTML, CSS, JS et Custom Fields.
+4. Sauvegardez et utilisez l'URL Streamlabs dans OBS !
+
+### Méthode 2 : Source Navigateur locale / GitHub Pages (overlay.html)
 
 ## Installation OBS
 

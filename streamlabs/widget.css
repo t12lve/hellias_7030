@@ -1,0 +1,245 @@
+/* Hellias 70/30 — Thème pour Streamlabs Sub Goal (Custom CSS) */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Libre+Baskerville:wght@700&display=swap');
+
+:root {
+  --accent: #c8ff00;
+  --bg: #1a1a1e;
+  --text: #f0f0f0;
+  --grid: #000000;
+  --bg-opacity: 1;
+}
+
+/* Remplacement des Custom Fields Streamlabs si activés */
+#wrap, .hellias-goal-shell, .custom__container {
+  --accent: {colorAccent};
+  --bg: {colorBg};
+  --text: {colorText};
+  --grid: {colorGrid};
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'Consolas', monospace;
+  color: var(--text, #f0f0f0);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Conteneur injecté par Streamlabs */
+#wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+}
+
+/* ── Structure Shell Hellias & Compatibilité Template par défaut ── */
+.hellias-goal-shell,
+.custom__container {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--bg, #1a1a1e) calc(var(--bg-opacity, 1) * 100%), transparent);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'Consolas', monospace;
+  color: var(--text, #f0f0f0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hellias-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.35;
+}
+
+.hellias-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: #0d0d10;
+  filter: blur(18px);
+}
+
+.hellias-blob:nth-child(1) {
+  width: 70%;
+  height: 90%;
+  top: -30%;
+  left: -20%;
+}
+
+.hellias-blob:nth-child(2) {
+  width: 50%;
+  height: 60%;
+  bottom: -25%;
+  right: -10%;
+}
+
+.hellias-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* En-tête / Titre et compteurs */
+.hellias-header,
+.custom__current-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.hellias-label,
+#goal-title,
+.custom__title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--text, #f0f0f0);
+}
+
+.hellias-counter,
+.custom__current-amount span,
+.custom__amount {
+  font-family: 'IBM Plex Mono', Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.hellias-counter .sep {
+  opacity: 0.5;
+  margin: 0 3px;
+}
+
+.current,
+#current-amount {
+  color: var(--accent, #c8ff00);
+}
+
+#target-amount,
+.custom__amount {
+  opacity: 0.9;
+}
+
+/* ── Barre de progression & motif quadrillé néon ── */
+.hellias-bar-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.hellias-bar-track {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hellias-bar-fill,
+#progress-bar,
+.custom__bar {
+  height: 18px;
+  background-color: var(--accent, #c8ff00);
+  background-image:
+    linear-gradient(var(--grid, #000000) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid, #000000) 1px, transparent 1px);
+  background-size: 8px 8px;
+  background-blend-mode: multiply;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent, #c8ff00) 50%, transparent);
+}
+
+.shadow-overlay {
+  display: none !important;
+}
+
+/* ── Pied de page & Pastilles de streak 3 mois ── */
+.hellias-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hellias-streak {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.streak-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.streak-dot.filled {
+  background: var(--accent, #c8ff00);
+  border-color: var(--accent, #c8ff00);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent, #c8ff00) 65%, transparent);
+  transform: scale(1.15);
+}
+
+.streak-text {
+  font-size: 11px;
+  opacity: 0.75;
+  margin-left: 4px;
+}
+
+.hellias-badge {
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+  color: var(--accent, #c8ff00);
+}
+
+/* ── Animation néon lors d'un nouvel abonnement ── */
+@keyframes subGlow {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+  30% {
+    transform: scale(1.025);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--accent, #c8ff00) 45%, transparent),
+                0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.anim-sub {
+  animation: subGlow 0.85s ease-out;
+}

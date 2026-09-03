@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Streamlabs Custom Widget — Hellias 70/30</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="widget.css">
+  <style>
+    /* Styling pour le banc d'essai local */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: #0e0e10;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      box-sizing: border-box;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+      color: #c8ff00;
+    }
+    p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    /* Conteneur simulant OBS avec damier de transparence */
+    .obs-simulator {
+      position: relative;
+      width: 500px;
+      height: 180px;
+      border: 2px dashed #2a2a35;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image:
+        linear-gradient(45deg, #18181c 25%, transparent 25%),
+        linear-gradient(-45deg, #18181c 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #18181c 75%),
+        linear-gradient(-45deg, transparent 75%, #18181c 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      background-color: #121215;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
+    /* #wrap simule exactement l'enveloppe Streamlabs */
+    #wrap {
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+    }
+    .controls-panel {
+      background: #1a1a1f;
+      border: 1px solid #2a2a35;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .controls-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 16px;
+      color: #fff;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    button {
+      background: #25252d;
+      color: #f0f0f0;
+      border: 1px solid #353540;
+      border-radius: 4px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    button:hover {
+      background: #32323e;
+      border-color: #c8ff00;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+    button.primary {
+      background: #c8ff00;
+      color: #000;
+      border-color: #c8ff00;
+      font-weight: 600;
+    }
+    button.primary:hover {
+      background: #d4ff26;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    label {
+      font-size: 0.8rem;
+      color: #aaa;
+      display: block;
+      margin-bottom: 4px;
+    }
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      background: #121215;
+      border: 1px solid #353540;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      box-sizing: border-box;
+    }
+    .back-link {
+      margin-top: 20px;
+      color: #888;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      color: #c8ff00;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Banc d'essai Streamlabs Custom Goal</h1>
+    <p>Simule les événements natifs <code>goalLoad</code> et <code>goalEvent</code> de Streamlabs</p>
+  </header>
+
+  <div class="obs-simulator" title="Zone simulant la source OBS (fond transparent)">
+    <div id="wrap">
+      <!-- Contenu HTML du widget Streamlabs -->
+      <div class="hellias-goal-shell" id="hellias-goal">
+        <div class="hellias-blobs" aria-hidden="true">
+          <div class="hellias-blob"></div>
+          <div class="hellias-blob"></div>
+        </div>
+        <div class="hellias-content">
+          <div class="hellias-header">
+            <span class="hellias-label" id="goal-title">Sub Points</span>
+            <span class="hellias-counter">
+              <span class="current" id="goal-current">476</span>
+              <span class="sep">/</span>
+              <span class="goal" id="goal-total">800</span>
+            </span>
+          </div>
+          <div class="hellias-bar-wrap">
+            <div class="hellias-bar-track" id="goal-bar">
+              <div class="hellias-bar-fill" id="goal-bar-fill" style="width: 59.5%;"></div>
+            </div>
+          </div>
+          <div class="hellias-footer" id="hellias-footer">
+            <div class="hellias-streak" id="goal-streak">
+              <span class="streak-dot" data-dot="1"></span>
+              <span class="streak-dot" data-dot="2"></span>
+              <span class="streak-dot" data-dot="3"></span>
+              <span class="streak-text" id="goal-streak-text">0/3</span>
+            </div>
+            <div class="hellias-badge" id="goal-badge" hidden></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-panel">
+    <div class="controls-title">Simulateur d'événements Streamlabs</div>
+    <div class="btn-row">
+      <button type="button" class="primary" id="btn-sub-1">+1 Sub (Event)</button>
+      <button type="button" id="btn-sub-5">+5 Subs</button>
+      <button type="button" id="btn-sub-minus">-1 Sub</button>
+      <button type="button" id="btn-complete">Compléter l'objectif (800/800)</button>
+      <button type="button" id="btn-reset-goal">Reset (476/800)</button>
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label for="simCurrent">Points actuels</label>
+        <input type="number" id="simCurrent" value="476">
+      </div>
+      <div>
+        <label for="simTarget">Objectif total</label>
+        <input type="number" id="simTarget" value="800">
+      </div>
+    </div>
+    <div style="margin-top: 10px;">
+      <button type="button" id="btn-apply-manual">Déclencher goalLoad manuel</button>
+    </div>
+  </div>
+
+  <a href="../settings.html" class="back-link">← Retour aux réglages</a>
+
+  <script>
+    window.__streamlabsInit = true; // Empêche l'auto-init du fallback
+  </script>
+  <script src="widget.js"></script>
+  <script>
+    // Initialisation
+    var current = 476;
+    var target = 800;
+
+    function dispatchGoalLoad(cur, tar, title) {
+      document.dispatchEvent(new CustomEvent('goalLoad', {
+        detail: {
+          title: title || 'Sub Points',
+          amount: { current: cur, target: tar }
+        }
+      }));
+    }
+
+    function dispatchGoalEvent(cur, tar) {
+      document.dispatchEvent(new CustomEvent('goalEvent', {
+        detail: {
+          amount: { current: cur, target: tar }
+        }
+      }));
+    }
+
+    // Init initiale
+    dispatchGoalLoad(current, target);
+
+    document.getElementById('btn-sub-1').addEventListener('click', function () {
+      current += 1;
+      document.getElementById('simCurrent').value = current;
+      dispatchGoalEvent(current, target);
+    });
+
+    document.getElementById('btn-sub-5').addEventListener('click', function () {
+      current += 5;
+      document.getElementById('simCurrent').value = current;
+      dispatchGoalEvent(current, target);
+    });
+
+    document.getElementById('btn-sub-minus').addEventListener('click', function () {
+      current = Math.max(0, current - 1);
+      document.getElementById('simCurrent').value = current;
+      dispatchGoalEvent(current, target);
+    });
+
+    document.getElementById('btn-complete').addEventListener('click', function () {
+      current = target;
+      document.getElementById('simCurrent').value = current;
+      dispatchGoalEvent(current, target);
+    });
+
+    document.getElementById('btn-reset-goal').addEventListener('click', function () {
+      current = 476;
+      target = 800;
+      document.getElementById('simCurrent').value = current;
+      document.getElementById('simTarget').value = target;
+      dispatchGoalLoad(current, target);
+    });
+
+    document.getElementById('btn-apply-manual').addEventListener('click', function () {
+      current = parseInt(document.getElementById('simCurrent').value, 10) || 0;
+      target = parseInt(document.getElementById('simTarget').value, 10) || 800;
+      dispatchGoalLoad(current, target);
+    });
+  </script>
+</body>
+</html>
